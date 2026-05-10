@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<!-- saved from url=(0049)file:///C:/Users/shora/Downloads/sight-words.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>500 Sight Words</title>
+<link href="./500 Sight Words_files/css2" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FAF7F2;
+    --ink: #1A1410;
+    --muted: #7A6E64;
+    --accent: #D4622A;
+    --accent-light: #F5E8E0;
+    --level1: #2D6A4F;
+    --level1-bg: #E8F5EE;
+    --level2: #1D4E89;
+    --level2-bg: #E3EDF8;
+    --level3: #7B2D8B;
+    --level3-bg: #F2E8F5;
+    --level4: #B5451B;
+    --level4-bg: #FAEAE3;
+    --level5: #5C4A1E;
+    --level5-bg: #F5EDD8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  header {
+    border-bottom: 1.5px solid var(--ink);
+    padding: 2rem 2.5rem 1.5rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .header-left h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .header-left p {
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 6px;
+  }
+
+  .counter {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    color: var(--muted);
+    text-align: right;
+  }
+
+  .counter strong {
+    display: block;
+    font-size: 2.5rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .controls {
+    padding: 1.25rem 2.5rem;
+    border-bottom: 0.5px solid #D5CECC;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+    background: var(--cream);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .search-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+    max-width: 320px;
+  }
+
+  .search-wrap input {
+    width: 100%;
+    padding: 8px 12px 8px 36px;
+    border: 1.5px solid #D5CECC;
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    background: white;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .search-wrap input:focus { border-color: var(--ink); }
+
+  .search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 16px;
+    pointer-events: none;
+  }
+
+  .filter-btn {
+    padding: 8px 14px;
+    border: 1.5px solid #D5CECC;
+    border-radius: 6px;
+    background: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--muted);
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .filter-btn:hover { border-color: var(--ink); color: var(--ink); }
+  .filter-btn.active { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+
+  .level-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+
+  main { padding: 2rem 2.5rem; }
+
+  .level-section { margin-bottom: 3rem; }
+
+  .level-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 0.5px solid #D5CECC;
+  }
+
+  .level-name {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+
+  .level-count {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .word-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 8px;
+  }
+
+  .word-card {
+    background: white;
+    border: 1px solid #E5DDD8;
+    border-radius: 8px;
+    padding: 10px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.12s;
+    user-select: none;
+    position: relative;
+  }
+
+  .word-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+  .word-card.learned { border-color: transparent; }
+
+  .word-text {
+    font-family: 'Fraunces', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  .word-card.learned .word-text { opacity: 0.5; text-decoration: line-through; }
+
+  .check-mark {
+    position: absolute;
+    top: 4px; right: 6px;
+    font-size: 10px;
+    display: none;
+  }
+
+  .word-card.learned .check-mark { display: block; }
+
+  .no-results {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--muted);
+    font-size: 1.1rem;
+  }
+
+  .progress-bar-wrap {
+    height: 3px;
+    background: #E5DDD8;
+    border-radius: 2px;
+    margin-top: 8px;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+
+  /* level colors */
+  .l1 .level-name { color: var(--level1); }
+  .l1 .word-card.learned { background: var(--level1-bg); }
+  .l1 .level-dot { background: var(--level1); }
+
+  .l2 .level-name { color: var(--level2); }
+  .l2 .word-card.learned { background: var(--level2-bg); }
+  .l2 .level-dot { background: var(--level2); }
+
+  .l3 .level-name { color: var(--level3); }
+  .l3 .word-card.learned { background: var(--level3-bg); }
+  .l3 .level-dot { background: var(--level3); }
+
+  .l4 .level-name { color: var(--level4); }
+  .l4 .word-card.learned { background: var(--level4-bg); }
+  .l4 .level-dot { background: var(--level4); }
+
+  .l5 .level-name { color: var(--level5); }
+  .l5 .word-card.learned { background: var(--level5-bg); }
+  .l5 .level-dot { background: var(--level5); }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--muted);
+    font-size: 13px;
+    border-top: 0.5px solid #D5CECC;
+  }
+
+  @media (max-width: 600px) {
+    header, main, .controls { padding-left: 1.25rem; padding-right: 1.25rem; }
+    .word-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <h1>Sight Words</h1>
+    <p>Tap a word to mark it as learned — progress saves automatically</p>
+  </div>
+  <div class="counter">
+    <strong id="learned-count">0</strong>
+    of 500 learned
+    <div class="progress-bar-wrap" style="width:120px; margin-top:6px;">
+      <div class="progress-bar" id="main-progress" style="width: 0%;"></div>
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="search" placeholder="Search words..." oninput="filterWords()">
+  </div>
+  <button class="filter-btn active" onclick="setFilter(&#39;all&#39;, this)">All levels</button>
+  <button class="filter-btn" onclick="setFilter(&#39;1&#39;, this)"><span class="level-dot" style="background:var(--level1)"></span>Pre-K</button>
+  <button class="filter-btn" onclick="setFilter(&#39;2&#39;, this)"><span class="level-dot" style="background:var(--level2)"></span>K</button>
+  <button class="filter-btn" onclick="setFilter(&#39;3&#39;, this)"><span class="level-dot" style="background:var(--level3)"></span>Grade 1</button>
+  <button class="filter-btn" onclick="setFilter(&#39;4&#39;, this)"><span class="level-dot" style="background:var(--level4)"></span>Grade 2</button>
+  <button class="filter-btn" onclick="setFilter(&#39;5&#39;, this)"><span class="level-dot" style="background:var(--level5)"></span>Grade 3</button>
+  <button class="filter-btn" onclick="resetAll()" style="margin-left:auto; border-color: #E5DDD8;">Reset progress</button>
+</div>
+
+<main id="main"><div class="level-section l1" id="section-1" style="">
+      <div class="level-header">
+        <span class="level-name"><span class="level-dot"></span>Pre-K (Dolch Pre-Primer)</span>
+        <span class="level-count">40 words</span>
+      </div>
+      <div class="word-grid" id="grid-1"><div class="word-card" data-word="a" role="button" aria-label="a" tabindex="0"><span class="word-text">a</span><span class="check-mark">✓</span></div><div class="word-card" data-word="and" role="button" aria-label="and" tabindex="0"><span class="word-text">and</span><span class="check-mark">✓</span></div><div class="word-card" data-word="away" role="button" aria-label="away" tabindex="0"><span class="word-text">away</span><span class="check-mark">✓</span></div><div class="word-card" data-word="big" role="button" aria-label="big" tabindex="0"><span class="word-text">big</span><span class="check-mark">✓</span></div><div class="word-card" data-word="blue" role="button" aria-label="blue" tabindex="0"><span class="word-text">blue</span><span class="check-mark">✓</span></div><div class="word-card" data-word="can" role="button" aria-label="can" tabindex="0"><span class="word-text">can</span><span class="check-mark">✓</span></div><div class="word-card" data-word="come" role="button" aria-label="come" tabindex="0"><span class="word-text">come</span><span class="check-mark">✓</span></div><div class="word-card" data-word="down" role="button" aria-label="down" tabindex="0"><span class="word-text">down</span><span class="check-mark">✓</span></div><div class="word-card" data-word="find" role="button" aria-label="find" tabindex="0"><span class="word-text">find</span><span class="check-mark">✓</span></div><div class="word-card" data-word="for" role="button" aria-label="for" tabindex="0"><span class="word-text">for</span><span class="check-mark">✓</span></div><div class="word-card" data-word="funny" role="button" aria-label="funny" tabindex="0"><span class="word-text">funny</span><span class="check-mark">✓</span></div><div class="word-card" data-word="go" role="button" aria-label="go" tabindex="0"><span class="word-text">go</span><span class="check-mark">✓</span></div><div class="word-card" data-word="help" role="button" aria-label="help" tabindex="0"><span class="word-text">help</span><span class="check-mark">✓</span></div><div class="word-card" data-word="here" role="button" aria-label="here" tabindex="0"><span class="word-text">here</span><span class="check-mark">✓</span></div><div class="word-card" data-word="I" role="button" aria-label="I" tabindex="0"><span class="word-text">I</span><span class="check-mark">✓</span></div><div class="word-card" data-word="in" role="button" aria-label="in" tabindex="0"><span class="word-text">in</span><span class="check-mark">✓</span></div><div class="word-card" data-word="is" role="button" aria-label="is" tabindex="0"><span class="word-text">is</span><span class="check-mark">✓</span></div><div class="word-card" data-word="it" role="button" aria-label="it" tabindex="0"><span class="word-text">it</span><span class="check-mark">✓</span></div><div class="word-card" data-word="jump" role="button" aria-label="jump" tabindex="0"><span class="word-text">jump</span><span class="check-mark">✓</span></div><div class="word-card" data-word="little" role="button" aria-label="little" tabindex="0"><span class="word-text">little</span><span class="check-mark">✓</span></div><div class="word-card" data-word="look" role="button" aria-label="look" tabindex="0"><span class="word-text">look</span><span class="check-mark">✓</span></div><div class="word-card" data-word="make" role="button" aria-label="make" tabindex="0"><span class="word-text">make</span><span class="check-mark">✓</span></div><div class="word-card" data-word="me" role="button" aria-label="me" tabindex="0"><span class="word-text">me</span><span class="check-mark">✓</span></div><div class="word-card" data-word="my" role="button" aria-label="my" tabindex="0"><span class="word-text">my</span><span class="check-mark">✓</span></div><div class="word-card" data-word="not" role="button" aria-label="not" tabindex="0"><span class="word-text">not</span><span class="check-mark">✓</span></div><div class="word-card" data-word="one" role="button" aria-label="one" tabindex="0"><span class="word-text">one</span><span class="check-mark">✓</span></div><div class="word-card" data-word="play" role="button" aria-label="play" tabindex="0"><span class="word-text">play</span><span class="check-mark">✓</span></div><div class="word-card" data-word="red" role="button" aria-label="red" tabindex="0"><span class="word-text">red</span><span class="check-mark">✓</span></div><div class="word-card" data-word="run" role="button" aria-label="run" tabindex="0"><span class="word-text">run</span><span class="check-mark">✓</span></div><div class="word-card" data-word="said" role="button" aria-label="said" tabindex="0"><span class="word-text">said</span><span class="check-mark">✓</span></div><div class="word-card" data-word="see" role="button" aria-label="see" tabindex="0"><span class="word-text">see</span><span class="check-mark">✓</span></div><div class="word-card" data-word="the" role="button" aria-label="the" tabindex="0"><span class="word-text">the</span><span class="check-mark">✓</span></div><div class="word-card" data-word="three" role="button" aria-label="three" tabindex="0"><span class="word-text">three</span><span class="check-mark">✓</span></div><div class="word-card" data-word="to" role="button" aria-label="to" tabindex="0"><span class="word-text">to</span><span class="check-mark">✓</span></div><div class="word-card" data-word="two" role="button" aria-label="two" tabindex="0"><span class="word-text">two</span><span class="check-mark">✓</span></div><div class="word-card" data-word="up" role="button" aria-label="up" tabindex="0"><span class="word-text">up</span><span class="check-mark">✓</span></div><div class="word-card" data-word="we" role="button" aria-label="we" tabindex="0"><span class="word-text">we</span><span class="check-mark">✓</span></div><div class="word-card" data-word="where" role="button" aria-label="where" tabindex="0"><span class="word-text">where</span><span class="check-mark">✓</span></div><div class="word-card" data-word="yellow" role="button" aria-label="yellow" tabindex="0"><span class="word-text">yellow</span><span class="check-mark">✓</span></div><div class="word-card" data-word="you" role="button" aria-label="you" tabindex="0"><span class="word-text">you</span><span class="check-mark">✓</span></div></div>
+    </div><div class="level-section l2" id="section-2" style="">
+      <div class="level-header">
+        <span class="level-name"><span class="level-dot"></span>Kindergarten (Dolch Primer)</span>
+        <span class="level-count">52 words</span>
+      </div>
+      <div class="word-grid" id="grid-2"><div class="word-card" data-word="all" role="button" aria-label="all" tabindex="0"><span class="word-text">all</span><span class="check-mark">✓</span></div><div class="word-card" data-word="am" role="button" aria-label="am" tabindex="0"><span class="word-text">am</span><span class="check-mark">✓</span></div><div class="word-card" data-word="are" role="button" aria-label="are" tabindex="0"><span class="word-text">are</span><span class="check-mark">✓</span></div><div class="word-card" data-word="at" role="button" aria-label="at" tabindex="0"><span class="word-text">at</span><span class="check-mark">✓</span></div><div class="word-card" data-word="ate" role="button" aria-label="ate" tabindex="0"><span class="word-text">ate</span><span class="check-mark">✓</span></div><div class="word-card" data-word="be" role="button" aria-label="be" tabindex="0"><span class="word-text">be</span><span class="check-mark">✓</span></div><div class="word-card" data-word="black" role="button" aria-label="black" tabindex="0"><span class="word-text">black</span><span class="check-mark">✓</span></div><div class="word-card" data-word="brown" role="button" aria-label="brown" tabindex="0"><span class="word-text">brown</span><span class="check-mark">✓</span></div><div class="word-card" data-word="but" role="button" aria-label="but" tabindex="0"><span class="word-text">but</span><span class="check-mark">✓</span></div><div class="word-card" data-word="came" role="button" aria-label="came" tabindex="0"><span class="word-text">came</span><span class="check-mark">✓</span></div><div class="word-card" data-word="did" role="button" aria-label="did" tabindex="0"><span class="word-text">did</span><span class="check-mark">✓</span></div><div class="word-card" data-word="do" role="button" aria-label="do" tabindex="0"><span class="word-text">do</span><span class="check-mark">✓</span></div><div class="word-card" data-word="eat" role="button" aria-label="eat" tabindex="0"><span class="word-text">eat</span><span class="check-mark">✓</span></div><div class="word-card" data-word="four" role="button" aria-label="four" tabindex="0"><span class="word-text">four</span><span class="check-mark">✓</span></div><div class="word-card" data-word="get" role="button" aria-label="get" tabindex="0"><span class="word-text">get</span><span class="check-mark">✓</span></div><div class="word-card" data-word="good" role="button" aria-label="good" tabindex="0"><span class="word-text">good</span><span class="check-mark">✓</span></div><div class="word-card" data-word="have" role="button" aria-label="have" tabindex="0"><span class="word-text">have</span><span class="check-mark">✓</span></div><div class="word-card" data-word="he" role="button" aria-label="he" tabindex="0"><span class="word-text">he</span><span class="check-mark">✓</span></div><div class="word-card" data-word="into" role="button" aria-label="into" tabindex="0"><span class="word-text">into</span><span class="check-mark">✓</span></div><div class="word-card" data-word="like" role="button" aria-label="like" tabindex="0"><span class="word-text">like</span><span class="check-mark">✓</span></div><div class="word-card" data-word="must" role="button" aria-label="must" tabindex="0"><span class="word-text">must</span><span class="check-mark">✓</span></div><div class="word-card" data-word="new" role="button" aria-label="new" tabindex="0"><span class="word-text">new</span><span class="check-mark">✓</span></div><div class="word-card" data-word="no" role="button" aria-label="no" tabindex="0"><span class="word-text">no</span><span class="check-mark">✓</span></div><div class="word-card" data-word="now" role="button" aria-label="now" tabindex="0"><span class="word-text">now</span><span class="check-mark">✓</span></div><div class="word-card" data-word="on" role="button" aria-label="on" tabindex="0"><span class="word-text">on</span><span class="check-mark">✓</span></div><div class="word-card" data-word="our" role="button" aria-label="our" tabindex="0"><span class="word-text">our</span><span class="check-mark">✓</span></div><div class="word-card" data-word="out" role="button" aria-label="out" tabindex="0"><span class="word-text">out</span><span class="check-mark">✓</span></div><div class="word-card" data-word="please" role="button" aria-label="please" tabindex="0"><span class="word-text">please</span><span class="check-mark">✓</span></div><div class="word-card" data-word="pretty" role="button" aria-label="pretty" tabindex="0"><span class="word-text">pretty</span><span class="check-mark">✓</span></div><div class="word-card" data-word="ran" role="button" aria-label="ran" tabindex="0"><span class="word-text">ran</span><span class="check-mark">✓</span></div><div class="word-card" data-word="ride" role="button" aria-label="ride" tabindex="0"><span class="word-text">ride</span><span class="check-mark">✓</span></div><div class="word-card" data-word="saw" role="button" aria-label="saw" tabindex="0"><span class="word-text">saw</span><span class="check-mark">✓</span></div><div class="word-card" data-word="say" role="button" aria-label="say" tabindex="0"><span class="word-text">say</span><span class="check-mark">✓</span></div><div class="word-card" data-word="she" role="button" aria-label="she" tabindex="0"><span class="word-text">she</span><span class="check-mark">✓</span></div><div class="word-card" data-word="so" role="button" aria-label="so" tabindex="0"><span class="word-text">so</span><span class="check-mark">✓</span></div><div class="word-card" data-word="soon" role="button" aria-label="soon" tabindex="0"><span class="word-text">soon</span><span class="check-mark">✓</span></div><div class="word-card" data-word="that" role="button" aria-label="that" tabindex="0"><span class="word-text">that</span><span class="check-mark">✓</span></div><div class="word-card" data-word="there" role="button" aria-label="there" tabindex="0"><span class="word-text">there</span><span class="check-mark">✓</span></div><div class="word-card" data-word="they" role="button" aria-label="they" tabindex="0"><span class="word-text">they</span><span class="check-mark">✓</span></div><div class="word-card" data-word="this" role="button" aria-label="this" tabindex="0"><span class="word-text">this</span><span class="check-mark">✓</span></div><div class="word-card" data-word="too" role="button" aria-label="too" tabindex="0"><span class="word-text">too</span><span class="check-mark">✓</span></div><div class="word-card" data-word="under" role="button" aria-label="under" tabindex="0"><span class="word-text">under</span><span class="check-mark">✓</span></div><div class="word-card" data-word="want" role="button" aria-label="want" tabindex="0"><span class="word-text">want</span><span class="check-mark">✓</span></div><div class="word-card" data-word="was" role="button" aria-label="was" tabindex="0"><span class="word-text">was</span><span class="check-mark">✓</span></div><div class="word-card" data-word="well" role="button" aria-label="well" tabindex="0"><span class="word-text">well</span><span class="check-mark">✓</span></div><div class="word-card" data-word="went" role="button" aria-label="went" tabindex="0"><span class="word-text">went</span><span class="check-mark">✓</span></div><div class="word-card" data-word="what" role="button" aria-label="what" tabindex="0"><span class="word-text">what</span><span class="check-mark">✓</span></div><div class="word-card" data-word="white" role="button" aria-label="white" tabindex="0"><span class="word-text">white</span><span class="check-mark">✓</span></div><div class="word-card" data-word="who" role="button" aria-label="who" tabindex="0"><span class="word-text">who</span><span class="check-mark">✓</span></div><div class="word-card" data-word="will" role="button" aria-label="will" tabindex="0"><span class="word-text">will</span><span class="check-mark">✓</span></div><div class="word-card" data-word="with" role="button" aria-label="with" tabindex="0"><span class="word-text">with</span><span class="check-mark">✓</span></div><div class="word-card" data-word="yes" role="button" aria-label="yes" tabindex="0"><span class="word-text">yes</span><span class="check-mark">✓</span></div></div>
+    </div><div class="level-section l3" id="section-3" style="">
+      <div class="level-header">
+        <span class="level-name"><span class="level-dot"></span>Grade 1 (Dolch Grade 1)</span>
+        <span class="level-count">40 words</span>
+      </div>
+      <div class="word-grid" id="grid-3"><div class="word-card" data-word="after" role="button" aria-label="after" tabindex="0"><span class="word-text">after</span><span class="check-mark">✓</span></div><div class="word-card" data-word="again" role="button" aria-label="again" tabindex="0"><span class="word-text">again</span><span class="check-mark">✓</span></div><div class="word-card" data-word="an" role="button" aria-label="an" tabindex="0"><span class="word-text">an</span><span class="check-mark">✓</span></div><div class="word-card" data-word="any" role="button" aria-label="any" tabindex="0"><span class="word-text">any</span><span class="check-mark">✓</span></div><div class="word-card" data-word="as" role="button" aria-label="as" tabindex="0"><span class="word-text">as</span><span class="check-mark">✓</span></div><div class="word-card" data-word="ask" role="button" aria-label="ask" tabindex="0"><span class="word-text">ask</span><span class="check-mark">✓</span></div><div class="word-card" data-word="by" role="button" aria-label="by" tabindex="0"><span class="word-text">by</span><span class="check-mark">✓</span></div><div class="word-card" data-word="could" role="button" aria-label="could" tabindex="0"><span class="word-text">could</span><span class="check-mark">✓</span></div><div class="word-card" data-word="every" role="button" aria-label="every" tabindex="0"><span class="word-text">every</span><span class="check-mark">✓</span></div><div class="word-card" data-word="fly" role="button" aria-label="fly" tabindex="0"><span class="word-text">fly</span><span class="check-mark">✓</span></div><div class="word-card" data-word="from" role="button" aria-label="from" tabindex="0"><span class="word-text">from</span><span class="check-mark">✓</span></div><div class="word-card" data-word="give" role="button" aria-label="give" tabindex="0"><span class="word-text">give</span><span class="check-mark">✓</span></div><div class="word-card" data-word="going" role="button" aria-label="going" tabindex="0"><span class="word-text">going</span><span class="check-mark">✓</span></div><div class="word-card" data-word="had" role="button" aria-label="had" tabindex="0"><span class="word-text">had</span><span class="check-mark">✓</span></div><div class="word-card" data-word="has" role="button" aria-label="has" tabindex="0"><span class="word-text">has</span><span class="check-mark">✓</span></div><div class="word-card" data-word="her" role="button" aria-label="her" tabindex="0"><span class="word-text">her</span><span class="check-mark">✓</span></div><div class="word-card" data-word="him" role="button" aria-label="him" tabindex="0"><span class="word-text">him</span><span class="check-mark">✓</span></div><div class="word-card" data-word="his" role="button" aria-label="his" tabindex="0"><span class="word-text">his</span><span class="check-mark">✓</span></div><div class="word-card" data-word="how" role="button" aria-label="how" tabindex="0"><span class="word-text">how</span><span class="check-mark">✓</span></div><div class="word-card" data-word="just" role="button" aria-label="just" tabindex="0"><span class="word-text">just</span><span class="check-mark">✓</span></div><div class="word-card" data-word="know" role="button" aria-label="know" tabindex="0"><span class="word-text">know</span><span class="check-mark">✓</span></div><div class="word-card" data-word="let" role="button" aria-label="let" tabindex="0"><span class="word-text">let</span><span class="check-mark">✓</span></div><div class="word-card" data-word="live" role="button" aria-label="live" tabindex="0"><span class="word-text">live</span><span class="check-mark">✓</span></div><div class="word-card" data-word="may" role="button" aria-label="may" tabindex="0"><span class="word-text">may</span><span class="check-mark">✓</span></div><div class="word-card" data-word="of" role="button" aria-label="of" tabindex="0"><span class="word-text">of</span><span class="check-mark">✓</span></div><div class="word-card" data-word="old" role="button" aria-label="old" tabindex="0"><span class="word-text">old</span><span class="check-mark">✓</span></div><div class="word-card" data-word="once" role="button" aria-label="once" tabindex="0"><span class="word-text">once</span><span class="check-mark">✓</span></div><div class="word-card" data-word="open" role="button" aria-label="open" tabindex="0"><span class="word-text">open</span><span class="check-mark">✓</span></div><div class="word-card" data-word="over" role="button" aria-label="over" tabindex="0"><span class="word-text">over</span><span class="check-mark">✓</span></div><div class="word-card" data-word="put" role="button" aria-label="put" tabindex="0"><span class="word-text">put</span><span class="check-mark">✓</span></div><div class="word-card" data-word="round" role="button" aria-label="round" tabindex="0"><span class="word-text">round</span><span class="check-mark">✓</span></div><div class="word-card" data-word="some" role="button" aria-label="some" tabindex="0"><span class="word-text">some</span><span class="check-mark">✓</span></div><div class="word-card" data-word="stop" role="button" aria-label="stop" tabindex="0"><span class="word-text">stop</span><span class="check-mark">✓</span></div><div class="word-card" data-word="take" role="button" aria-label="take" tabindex="0"><span class="word-text">take</span><span class="check-mark">✓</span></div><div class="word-card" data-word="thank" role="button" aria-label="thank" tabindex="0"><span class="word-text">thank</span><span class="check-mark">✓</span></div><div class="word-card" data-word="them" role="button" aria-label="them" tabindex="0"><span class="word-text">them</span><span class="check-mark">✓</span></div><div class="word-card" data-word="think" role="button" aria-label="think" tabindex="0"><span class="word-text">think</span><span class="check-mark">✓</span></div><div class="word-card" data-word="walk" role="button" aria-label="walk" tabindex="0"><span class="word-text">walk</span><span class="check-mark">✓</span></div><div class="word-card" data-word="were" role="button" aria-label="were" tabindex="0"><span class="word-text">were</span><span class="check-mark">✓</span></div><div class="word-card" data-word="when" role="button" aria-label="when" tabindex="0"><span class="word-text">when</span><span class="check-mark">✓</span></div></div>
+    </div><div class="level-section l4" id="section-4" style="">
+      <div class="level-header">
+        <span class="level-name"><span class="level-dot"></span>Grade 2 (Dolch Grade 2)</span>
+        <span class="level-count">46 words</span>
+      </div>
+      <div class="word-grid" id="grid-4"><div class="word-card" data-word="always" role="button" aria-label="always" tabindex="0"><span class="word-text">always</span><span class="check-mark">✓</span></div><div class="word-card" data-word="around" role="button" aria-label="around" tabindex="0"><span class="word-text">around</span><span class="check-mark">✓</span></div><div class="word-card" data-word="because" role="button" aria-label="because" tabindex="0"><span class="word-text">because</span><span class="check-mark">✓</span></div><div class="word-card" data-word="been" role="button" aria-label="been" tabindex="0"><span class="word-text">been</span><span class="check-mark">✓</span></div><div class="word-card" data-word="before" role="button" aria-label="before" tabindex="0"><span class="word-text">before</span><span class="check-mark">✓</span></div><div class="word-card" data-word="best" role="button" aria-label="best" tabindex="0"><span class="word-text">best</span><span class="check-mark">✓</span></div><div class="word-card" data-word="both" role="button" aria-label="both" tabindex="0"><span class="word-text">both</span><span class="check-mark">✓</span></div><div class="word-card" data-word="buy" role="button" aria-label="buy" tabindex="0"><span class="word-text">buy</span><span class="check-mark">✓</span></div><div class="word-card" data-word="call" role="button" aria-label="call" tabindex="0"><span class="word-text">call</span><span class="check-mark">✓</span></div><div class="word-card" data-word="cold" role="button" aria-label="cold" tabindex="0"><span class="word-text">cold</span><span class="check-mark">✓</span></div><div class="word-card" data-word="does" role="button" aria-label="does" tabindex="0"><span class="word-text">does</span><span class="check-mark">✓</span></div><div class="word-card" data-word="don&#39;t" role="button" aria-label="don&#39;t" tabindex="0"><span class="word-text">don't</span><span class="check-mark">✓</span></div><div class="word-card" data-word="fast" role="button" aria-label="fast" tabindex="0"><span class="word-text">fast</span><span class="check-mark">✓</span></div><div class="word-card" data-word="first" role="button" aria-label="first" tabindex="0"><span class="word-text">first</span><span class="check-mark">✓</span></div><div class="word-card" data-word="five" role="button" aria-label="five" tabindex="0"><span class="word-text">five</span><span class="check-mark">✓</span></div><div class="word-card" data-word="found" role="button" aria-label="found" tabindex="0"><span class="word-text">found</span><span class="check-mark">✓</span></div><div class="word-card" data-word="gave" role="button" aria-label="gave" tabindex="0"><span class="word-text">gave</span><span class="check-mark">✓</span></div><div class="word-card" data-word="goes" role="button" aria-label="goes" tabindex="0"><span class="word-text">goes</span><span class="check-mark">✓</span></div><div class="word-card" data-word="green" role="button" aria-label="green" tabindex="0"><span class="word-text">green</span><span class="check-mark">✓</span></div><div class="word-card" data-word="its" role="button" aria-label="its" tabindex="0"><span class="word-text">its</span><span class="check-mark">✓</span></div><div class="word-card" data-word="made" role="button" aria-label="made" tabindex="0"><span class="word-text">made</span><span class="check-mark">✓</span></div><div class="word-card" data-word="many" role="button" aria-label="many" tabindex="0"><span class="word-text">many</span><span class="check-mark">✓</span></div><div class="word-card" data-word="off" role="button" aria-label="off" tabindex="0"><span class="word-text">off</span><span class="check-mark">✓</span></div><div class="word-card" data-word="or" role="button" aria-label="or" tabindex="0"><span class="word-text">or</span><span class="check-mark">✓</span></div><div class="word-card" data-word="pull" role="button" aria-label="pull" tabindex="0"><span class="word-text">pull</span><span class="check-mark">✓</span></div><div class="word-card" data-word="read" role="button" aria-label="read" tabindex="0"><span class="word-text">read</span><span class="check-mark">✓</span></div><div class="word-card" data-word="right" role="button" aria-label="right" tabindex="0"><span class="word-text">right</span><span class="check-mark">✓</span></div><div class="word-card" data-word="sing" role="button" aria-label="sing" tabindex="0"><span class="word-text">sing</span><span class="check-mark">✓</span></div><div class="word-card" data-word="sit" role="button" aria-label="sit" tabindex="0"><span class="word-text">sit</span><span class="check-mark">✓</span></div><div class="word-card" data-word="sleep" role="button" aria-label="sleep" tabindex="0"><span class="word-text">sleep</span><span class="check-mark">✓</span></div><div class="word-card" data-word="tell" role="button" aria-label="tell" tabindex="0"><span class="word-text">tell</span><span class="check-mark">✓</span></div><div class="word-card" data-word="their" role="button" aria-label="their" tabindex="0"><span class="word-text">their</span><span class="check-mark">✓</span></div><div class="word-card" data-word="these" role="button" aria-label="these" tabindex="0"><span class="word-text">these</span><span class="check-mark">✓</span></div><div class="word-card" data-word="those" role="button" aria-label="those" tabindex="0"><span class="word-text">those</span><span class="check-mark">✓</span></div><div class="word-card" data-word="upon" role="button" aria-label="upon" tabindex="0"><span class="word-text">upon</span><span class="check-mark">✓</span></div><div class="word-card" data-word="us" role="button" aria-label="us" tabindex="0"><span class="word-text">us</span><span class="check-mark">✓</span></div><div class="word-card" data-word="use" role="button" aria-label="use" tabindex="0"><span class="word-text">use</span><span class="check-mark">✓</span></div><div class="word-card" data-word="very" role="button" aria-label="very" tabindex="0"><span class="word-text">very</span><span class="check-mark">✓</span></div><div class="word-card" data-word="wash" role="button" aria-label="wash" tabindex="0"><span class="word-text">wash</span><span class="check-mark">✓</span></div><div class="word-card" data-word="which" role="button" aria-label="which" tabindex="0"><span class="word-text">which</span><span class="check-mark">✓</span></div><div class="word-card" data-word="why" role="button" aria-label="why" tabindex="0"><span class="word-text">why</span><span class="check-mark">✓</span></div><div class="word-card" data-word="wish" role="button" aria-label="wish" tabindex="0"><span class="word-text">wish</span><span class="check-mark">✓</span></div><div class="word-card" data-word="work" role="button" aria-label="work" tabindex="0"><span class="word-text">work</span><span class="check-mark">✓</span></div><div class="word-card" data-word="would" role="button" aria-label="would" tabindex="0"><span class="word-text">would</span><span class="check-mark">✓</span></div><div class="word-card" data-word="write" role="button" aria-label="write" tabindex="0"><span class="word-text">write</span><span class="check-mark">✓</span></div><div class="word-card" data-word="your" role="button" aria-label="your" tabindex="0"><span class="word-text">your</span><span class="check-mark">✓</span></div></div>
+    </div><div class="level-section l5" id="section-5" style="">
+      <div class="level-header">
+        <span class="level-name"><span class="level-dot"></span>Grade 3+ (Fry High-Frequency)</span>
+        <span class="level-count">200 words</span>
+      </div>
+      <div class="word-grid" id="grid-5"><div class="word-card" data-word="about" role="button" aria-label="about" tabindex="0"><span class="word-text">about</span><span class="check-mark">✓</span></div><div class="word-card" data-word="above" role="button" aria-label="above" tabindex="0"><span class="word-text">above</span><span class="check-mark">✓</span></div><div class="word-card" data-word="across" role="button" aria-label="across" tabindex="0"><span class="word-text">across</span><span class="check-mark">✓</span></div><div class="word-card" data-word="add" role="button" aria-label="add" tabindex="0"><span class="word-text">add</span><span class="check-mark">✓</span></div><div class="word-card" data-word="age" role="button" aria-label="age" tabindex="0"><span class="word-text">age</span><span class="check-mark">✓</span></div><div class="word-card" data-word="ago" role="button" aria-label="ago" tabindex="0"><span class="word-text">ago</span><span class="check-mark">✓</span></div><div class="word-card" data-word="air" role="button" aria-label="air" tabindex="0"><span class="word-text">air</span><span class="check-mark">✓</span></div><div class="word-card" data-word="also" role="button" aria-label="also" tabindex="0"><span class="word-text">also</span><span class="check-mark">✓</span></div><div class="word-card" data-word="another" role="button" aria-label="another" tabindex="0"><span class="word-text">another</span><span class="check-mark">✓</span></div><div class="word-card" data-word="back" role="button" aria-label="back" tabindex="0"><span class="word-text">back</span><span class="check-mark">✓</span></div><div class="word-card" data-word="ball" role="button" aria-label="ball" tabindex="0"><span class="word-text">ball</span><span class="check-mark">✓</span></div><div class="word-card" data-word="bank" role="button" aria-label="bank" tabindex="0"><span class="word-text">bank</span><span class="check-mark">✓</span></div><div class="word-card" data-word="base" role="button" aria-label="base" tabindex="0"><span class="word-text">base</span><span class="check-mark">✓</span></div><div class="word-card" data-word="become" role="button" aria-label="become" tabindex="0"><span class="word-text">become</span><span class="check-mark">✓</span></div><div class="word-card" data-word="between" role="button" aria-label="between" tabindex="0"><span class="word-text">between</span><span class="check-mark">✓</span></div><div class="word-card" data-word="body" role="button" aria-label="body" tabindex="0"><span class="word-text">body</span><span class="check-mark">✓</span></div><div class="word-card" data-word="book" role="button" aria-label="book" tabindex="0"><span class="word-text">book</span><span class="check-mark">✓</span></div><div class="word-card" data-word="box" role="button" aria-label="box" tabindex="0"><span class="word-text">box</span><span class="check-mark">✓</span></div><div class="word-card" data-word="boy" role="button" aria-label="boy" tabindex="0"><span class="word-text">boy</span><span class="check-mark">✓</span></div><div class="word-card" data-word="bring" role="button" aria-label="bring" tabindex="0"><span class="word-text">bring</span><span class="check-mark">✓</span></div><div class="word-card" data-word="build" role="button" aria-label="build" tabindex="0"><span class="word-text">build</span><span class="check-mark">✓</span></div><div class="word-card" data-word="car" role="button" aria-label="car" tabindex="0"><span class="word-text">car</span><span class="check-mark">✓</span></div><div class="word-card" data-word="care" role="button" aria-label="care" tabindex="0"><span class="word-text">care</span><span class="check-mark">✓</span></div><div class="word-card" data-word="carry" role="button" aria-label="carry" tabindex="0"><span class="word-text">carry</span><span class="check-mark">✓</span></div><div class="word-card" data-word="change" role="button" aria-label="change" tabindex="0"><span class="word-text">change</span><span class="check-mark">✓</span></div><div class="word-card" data-word="city" role="button" aria-label="city" tabindex="0"><span class="word-text">city</span><span class="check-mark">✓</span></div><div class="word-card" data-word="close" role="button" aria-label="close" tabindex="0"><span class="word-text">close</span><span class="check-mark">✓</span></div><div class="word-card" data-word="color" role="button" aria-label="color" tabindex="0"><span class="word-text">color</span><span class="check-mark">✓</span></div><div class="word-card" data-word="come" role="button" aria-label="come" tabindex="0"><span class="word-text">come</span><span class="check-mark">✓</span></div><div class="word-card" data-word="cut" role="button" aria-label="cut" tabindex="0"><span class="word-text">cut</span><span class="check-mark">✓</span></div><div class="word-card" data-word="dark" role="button" aria-label="dark" tabindex="0"><span class="word-text">dark</span><span class="check-mark">✓</span></div><div class="word-card" data-word="day" role="button" aria-label="day" tabindex="0"><span class="word-text">day</span><span class="check-mark">✓</span></div><div class="word-card" data-word="different" role="button" aria-label="different" tabindex="0"><span class="word-text">different</span><span class="check-mark">✓</span></div><div class="word-card" data-word="door" role="button" aria-label="door" tabindex="0"><span class="word-text">door</span><span class="check-mark">✓</span></div><div class="word-card" data-word="draw" role="button" aria-label="draw" tabindex="0"><span class="word-text">draw</span><span class="check-mark">✓</span></div><div class="word-card" data-word="drive" role="button" aria-label="drive" tabindex="0"><span class="word-text">drive</span><span class="check-mark">✓</span></div><div class="word-card" data-word="drop" role="button" aria-label="drop" tabindex="0"><span class="word-text">drop</span><span class="check-mark">✓</span></div><div class="word-card" data-word="during" role="button" aria-label="during" tabindex="0"><span class="word-text">during</span><span class="check-mark">✓</span></div><div class="word-card" data-word="each" role="button" aria-label="each" tabindex="0"><span class="word-text">each</span><span class="check-mark">✓</span></div><div class="word-card" data-word="earth" role="button" aria-label="earth" tabindex="0"><span class="word-text">earth</span><span class="check-mark">✓</span></div><div class="word-card" data-word="easy" role="button" aria-label="easy" tabindex="0"><span class="word-text">easy</span><span class="check-mark">✓</span></div><div class="word-card" data-word="end" role="button" aria-label="end" tabindex="0"><span class="word-text">end</span><span class="check-mark">✓</span></div><div class="word-card" data-word="enough" role="button" aria-label="enough" tabindex="0"><span class="word-text">enough</span><span class="check-mark">✓</span></div><div class="word-card" data-word="even" role="button" aria-label="even" tabindex="0"><span class="word-text">even</span><span class="check-mark">✓</span></div><div class="word-card" data-word="example" role="button" aria-label="example" tabindex="0"><span class="word-text">example</span><span class="check-mark">✓</span></div><div class="word-card" data-word="eye" role="button" aria-label="eye" tabindex="0"><span class="word-text">eye</span><span class="check-mark">✓</span></div><div class="word-card" data-word="face" role="button" aria-label="face" tabindex="0"><span class="word-text">face</span><span class="check-mark">✓</span></div><div class="word-card" data-word="fact" role="button" aria-label="fact" tabindex="0"><span class="word-text">fact</span><span class="check-mark">✓</span></div><div class="word-card" data-word="fall" role="button" aria-label="fall" tabindex="0"><span class="word-text">fall</span><span class="check-mark">✓</span></div><div class="word-card" data-word="family" role="button" aria-label="family" tabindex="0"><span class="word-text">family</span><span class="check-mark">✓</span></div><div class="word-card" data-word="far" role="button" aria-label="far" tabindex="0"><span class="word-text">far</span><span class="check-mark">✓</span></div><div class="word-card" data-word="feel" role="button" aria-label="feel" tabindex="0"><span class="word-text">feel</span><span class="check-mark">✓</span></div><div class="word-card" data-word="feet" role="button" aria-label="feet" tabindex="0"><span class="word-text">feet</span><span class="check-mark">✓</span></div><div class="word-card" data-word="few" role="button" aria-label="few" tabindex="0"><span class="word-text">few</span><span class="check-mark">✓</span></div><div class="word-card" data-word="fire" role="button" aria-label="fire" tabindex="0"><span class="word-text">fire</span><span class="check-mark">✓</span></div><div class="word-card" data-word="follow" role="button" aria-label="follow" tabindex="0"><span class="word-text">follow</span><span class="check-mark">✓</span></div><div class="word-card" data-word="food" role="button" aria-label="food" tabindex="0"><span class="word-text">food</span><span class="check-mark">✓</span></div><div class="word-card" data-word="form" role="button" aria-label="form" tabindex="0"><span class="word-text">form</span><span class="check-mark">✓</span></div><div class="word-card" data-word="found" role="button" aria-label="found" tabindex="0"><span class="word-text">found</span><span class="check-mark">✓</span></div><div class="word-card" data-word="front" role="button" aria-label="front" tabindex="0"><span class="word-text">front</span><span class="check-mark">✓</span></div><div class="word-card" data-word="full" role="button" aria-label="full" tabindex="0"><span class="word-text">full</span><span class="check-mark">✓</span></div><div class="word-card" data-word="game" role="button" aria-label="game" tabindex="0"><span class="word-text">game</span><span class="check-mark">✓</span></div><div class="word-card" data-word="girl" role="button" aria-label="girl" tabindex="0"><span class="word-text">girl</span><span class="check-mark">✓</span></div><div class="word-card" data-word="got" role="button" aria-label="got" tabindex="0"><span class="word-text">got</span><span class="check-mark">✓</span></div><div class="word-card" data-word="ground" role="button" aria-label="ground" tabindex="0"><span class="word-text">ground</span><span class="check-mark">✓</span></div><div class="word-card" data-word="group" role="button" aria-label="group" tabindex="0"><span class="word-text">group</span><span class="check-mark">✓</span></div><div class="word-card" data-word="grow" role="button" aria-label="grow" tabindex="0"><span class="word-text">grow</span><span class="check-mark">✓</span></div><div class="word-card" data-word="hand" role="button" aria-label="hand" tabindex="0"><span class="word-text">hand</span><span class="check-mark">✓</span></div><div class="word-card" data-word="hard" role="button" aria-label="hard" tabindex="0"><span class="word-text">hard</span><span class="check-mark">✓</span></div><div class="word-card" data-word="head" role="button" aria-label="head" tabindex="0"><span class="word-text">head</span><span class="check-mark">✓</span></div><div class="word-card" data-word="hear" role="button" aria-label="hear" tabindex="0"><span class="word-text">hear</span><span class="check-mark">✓</span></div><div class="word-card" data-word="high" role="button" aria-label="high" tabindex="0"><span class="word-text">high</span><span class="check-mark">✓</span></div><div class="word-card" data-word="hold" role="button" aria-label="hold" tabindex="0"><span class="word-text">hold</span><span class="check-mark">✓</span></div><div class="word-card" data-word="home" role="button" aria-label="home" tabindex="0"><span class="word-text">home</span><span class="check-mark">✓</span></div><div class="word-card" data-word="horse" role="button" aria-label="horse" tabindex="0"><span class="word-text">horse</span><span class="check-mark">✓</span></div><div class="word-card" data-word="hour" role="button" aria-label="hour" tabindex="0"><span class="word-text">hour</span><span class="check-mark">✓</span></div><div class="word-card" data-word="house" role="button" aria-label="house" tabindex="0"><span class="word-text">house</span><span class="check-mark">✓</span></div><div class="word-card" data-word="idea" role="button" aria-label="idea" tabindex="0"><span class="word-text">idea</span><span class="check-mark">✓</span></div><div class="word-card" data-word="important" role="button" aria-label="important" tabindex="0"><span class="word-text">important</span><span class="check-mark">✓</span></div><div class="word-card" data-word="Indian" role="button" aria-label="Indian" tabindex="0"><span class="word-text">Indian</span><span class="check-mark">✓</span></div><div class="word-card" data-word="keep" role="button" aria-label="keep" tabindex="0"><span class="word-text">keep</span><span class="check-mark">✓</span></div><div class="word-card" data-word="kind" role="button" aria-label="kind" tabindex="0"><span class="word-text">kind</span><span class="check-mark">✓</span></div><div class="word-card" data-word="land" role="button" aria-label="land" tabindex="0"><span class="word-text">land</span><span class="check-mark">✓</span></div><div class="word-card" data-word="large" role="button" aria-label="large" tabindex="0"><span class="word-text">large</span><span class="check-mark">✓</span></div><div class="word-card" data-word="last" role="button" aria-label="last" tabindex="0"><span class="word-text">last</span><span class="check-mark">✓</span></div><div class="word-card" data-word="late" role="button" aria-label="late" tabindex="0"><span class="word-text">late</span><span class="check-mark">✓</span></div><div class="word-card" data-word="learn" role="button" aria-label="learn" tabindex="0"><span class="word-text">learn</span><span class="check-mark">✓</span></div><div class="word-card" data-word="left" role="button" aria-label="left" tabindex="0"><span class="word-text">left</span><span class="check-mark">✓</span></div><div class="word-card" data-word="life" role="button" aria-label="life" tabindex="0"><span class="word-text">life</span><span class="check-mark">✓</span></div><div class="word-card" data-word="light" role="button" aria-label="light" tabindex="0"><span class="word-text">light</span><span class="check-mark">✓</span></div><div class="word-card" data-word="line" role="button" aria-label="line" tabindex="0"><span class="word-text">line</span><span class="check-mark">✓</span></div><div class="word-card" data-word="list" role="button" aria-label="list" tabindex="0"><span class="word-text">list</span><span class="check-mark">✓</span></div><div class="word-card" data-word="long" role="button" aria-label="long" tabindex="0"><span class="word-text">long</span><span class="check-mark">✓</span></div><div class="word-card" data-word="look" role="button" aria-label="look" tabindex="0"><span class="word-text">look</span><span class="check-mark">✓</span></div><div class="word-card" data-word="love" role="button" aria-label="love" tabindex="0"><span class="word-text">love</span><span class="check-mark">✓</span></div><div class="word-card" data-word="low" role="button" aria-label="low" tabindex="0"><span class="word-text">low</span><span class="check-mark">✓</span></div><div class="word-card" data-word="man" role="button" aria-label="man" tabindex="0"><span class="word-text">man</span><span class="check-mark">✓</span></div><div class="word-card" data-word="map" role="button" aria-label="map" tabindex="0"><span class="word-text">map</span><span class="check-mark">✓</span></div><div class="word-card" data-word="mark" role="button" aria-label="mark" tabindex="0"><span class="word-text">mark</span><span class="check-mark">✓</span></div><div class="word-card" data-word="men" role="button" aria-label="men" tabindex="0"><span class="word-text">men</span><span class="check-mark">✓</span></div><div class="word-card" data-word="mile" role="button" aria-label="mile" tabindex="0"><span class="word-text">mile</span><span class="check-mark">✓</span></div><div class="word-card" data-word="miss" role="button" aria-label="miss" tabindex="0"><span class="word-text">miss</span><span class="check-mark">✓</span></div><div class="word-card" data-word="money" role="button" aria-label="money" tabindex="0"><span class="word-text">money</span><span class="check-mark">✓</span></div><div class="word-card" data-word="moon" role="button" aria-label="moon" tabindex="0"><span class="word-text">moon</span><span class="check-mark">✓</span></div><div class="word-card" data-word="morning" role="button" aria-label="morning" tabindex="0"><span class="word-text">morning</span><span class="check-mark">✓</span></div><div class="word-card" data-word="mountain" role="button" aria-label="mountain" tabindex="0"><span class="word-text">mountain</span><span class="check-mark">✓</span></div><div class="word-card" data-word="move" role="button" aria-label="move" tabindex="0"><span class="word-text">move</span><span class="check-mark">✓</span></div><div class="word-card" data-word="much" role="button" aria-label="much" tabindex="0"><span class="word-text">much</span><span class="check-mark">✓</span></div><div class="word-card" data-word="music" role="button" aria-label="music" tabindex="0"><span class="word-text">music</span><span class="check-mark">✓</span></div><div class="word-card" data-word="name" role="button" aria-label="name" tabindex="0"><span class="word-text">name</span><span class="check-mark">✓</span></div><div class="word-card" data-word="near" role="button" aria-label="near" tabindex="0"><span class="word-text">near</span><span class="check-mark">✓</span></div><div class="word-card" data-word="never" role="button" aria-label="never" tabindex="0"><span class="word-text">never</span><span class="check-mark">✓</span></div><div class="word-card" data-word="next" role="button" aria-label="next" tabindex="0"><span class="word-text">next</span><span class="check-mark">✓</span></div><div class="word-card" data-word="night" role="button" aria-label="night" tabindex="0"><span class="word-text">night</span><span class="check-mark">✓</span></div><div class="word-card" data-word="north" role="button" aria-label="north" tabindex="0"><span class="word-text">north</span><span class="check-mark">✓</span></div><div class="word-card" data-word="note" role="button" aria-label="note" tabindex="0"><span class="word-text">note</span><span class="check-mark">✓</span></div><div class="word-card" data-word="nothing" role="button" aria-label="nothing" tabindex="0"><span class="word-text">nothing</span><span class="check-mark">✓</span></div><div class="word-card" data-word="number" role="button" aria-label="number" tabindex="0"><span class="word-text">number</span><span class="check-mark">✓</span></div><div class="word-card" data-word="often" role="button" aria-label="often" tabindex="0"><span class="word-text">often</span><span class="check-mark">✓</span></div><div class="word-card" data-word="open" role="button" aria-label="open" tabindex="0"><span class="word-text">open</span><span class="check-mark">✓</span></div><div class="word-card" data-word="order" role="button" aria-label="order" tabindex="0"><span class="word-text">order</span><span class="check-mark">✓</span></div><div class="word-card" data-word="page" role="button" aria-label="page" tabindex="0"><span class="word-text">page</span><span class="check-mark">✓</span></div><div class="word-card" data-word="paper" role="button" aria-label="paper" tabindex="0"><span class="word-text">paper</span><span class="check-mark">✓</span></div><div class="word-card" data-word="part" role="button" aria-label="part" tabindex="0"><span class="word-text">part</span><span class="check-mark">✓</span></div><div class="word-card" data-word="pass" role="button" aria-label="pass" tabindex="0"><span class="word-text">pass</span><span class="check-mark">✓</span></div><div class="word-card" data-word="past" role="button" aria-label="past" tabindex="0"><span class="word-text">past</span><span class="check-mark">✓</span></div><div class="word-card" data-word="pattern" role="button" aria-label="pattern" tabindex="0"><span class="word-text">pattern</span><span class="check-mark">✓</span></div><div class="word-card" data-word="people" role="button" aria-label="people" tabindex="0"><span class="word-text">people</span><span class="check-mark">✓</span></div><div class="word-card" data-word="place" role="button" aria-label="place" tabindex="0"><span class="word-text">place</span><span class="check-mark">✓</span></div><div class="word-card" data-word="plan" role="button" aria-label="plan" tabindex="0"><span class="word-text">plan</span><span class="check-mark">✓</span></div><div class="word-card" data-word="plant" role="button" aria-label="plant" tabindex="0"><span class="word-text">plant</span><span class="check-mark">✓</span></div><div class="word-card" data-word="play" role="button" aria-label="play" tabindex="0"><span class="word-text">play</span><span class="check-mark">✓</span></div><div class="word-card" data-word="point" role="button" aria-label="point" tabindex="0"><span class="word-text">point</span><span class="check-mark">✓</span></div><div class="word-card" data-word="port" role="button" aria-label="port" tabindex="0"><span class="word-text">port</span><span class="check-mark">✓</span></div><div class="word-card" data-word="press" role="button" aria-label="press" tabindex="0"><span class="word-text">press</span><span class="check-mark">✓</span></div><div class="word-card" data-word="problem" role="button" aria-label="problem" tabindex="0"><span class="word-text">problem</span><span class="check-mark">✓</span></div><div class="word-card" data-word="product" role="button" aria-label="product" tabindex="0"><span class="word-text">product</span><span class="check-mark">✓</span></div><div class="word-card" data-word="question" role="button" aria-label="question" tabindex="0"><span class="word-text">question</span><span class="check-mark">✓</span></div><div class="word-card" data-word="quickly" role="button" aria-label="quickly" tabindex="0"><span class="word-text">quickly</span><span class="check-mark">✓</span></div><div class="word-card" data-word="quite" role="button" aria-label="quite" tabindex="0"><span class="word-text">quite</span><span class="check-mark">✓</span></div><div class="word-card" data-word="real" role="button" aria-label="real" tabindex="0"><span class="word-text">real</span><span class="check-mark">✓</span></div><div class="word-card" data-word="rest" role="button" aria-label="rest" tabindex="0"><span class="word-text">rest</span><span class="check-mark">✓</span></div><div class="word-card" data-word="river" role="button" aria-label="river" tabindex="0"><span class="word-text">river</span><span class="check-mark">✓</span></div><div class="word-card" data-word="rock" role="button" aria-label="rock" tabindex="0"><span class="word-text">rock</span><span class="check-mark">✓</span></div><div class="word-card" data-word="room" role="button" aria-label="room" tabindex="0"><span class="word-text">room</span><span class="check-mark">✓</span></div><div class="word-card" data-word="rule" role="button" aria-label="rule" tabindex="0"><span class="word-text">rule</span><span class="check-mark">✓</span></div><div class="word-card" data-word="run" role="button" aria-label="run" tabindex="0"><span class="word-text">run</span><span class="check-mark">✓</span></div><div class="word-card" data-word="same" role="button" aria-label="same" tabindex="0"><span class="word-text">same</span><span class="check-mark">✓</span></div><div class="word-card" data-word="school" role="button" aria-label="school" tabindex="0"><span class="word-text">school</span><span class="check-mark">✓</span></div><div class="word-card" data-word="sea" role="button" aria-label="sea" tabindex="0"><span class="word-text">sea</span><span class="check-mark">✓</span></div><div class="word-card" data-word="second" role="button" aria-label="second" tabindex="0"><span class="word-text">second</span><span class="check-mark">✓</span></div><div class="word-card" data-word="seem" role="button" aria-label="seem" tabindex="0"><span class="word-text">seem</span><span class="check-mark">✓</span></div><div class="word-card" data-word="sentence" role="button" aria-label="sentence" tabindex="0"><span class="word-text">sentence</span><span class="check-mark">✓</span></div><div class="word-card" data-word="set" role="button" aria-label="set" tabindex="0"><span class="word-text">set</span><span class="check-mark">✓</span></div><div class="word-card" data-word="several" role="button" aria-label="several" tabindex="0"><span class="word-text">several</span><span class="check-mark">✓</span></div><div class="word-card" data-word="side" role="button" aria-label="side" tabindex="0"><span class="word-text">side</span><span class="check-mark">✓</span></div><div class="word-card" data-word="small" role="button" aria-label="small" tabindex="0"><span class="word-text">small</span><span class="check-mark">✓</span></div><div class="word-card" data-word="something" role="button" aria-label="something" tabindex="0"><span class="word-text">something</span><span class="check-mark">✓</span></div><div class="word-card" data-word="sometimes" role="button" aria-label="sometimes" tabindex="0"><span class="word-text">sometimes</span><span class="check-mark">✓</span></div><div class="word-card" data-word="song" role="button" aria-label="song" tabindex="0"><span class="word-text">song</span><span class="check-mark">✓</span></div><div class="word-card" data-word="soon" role="button" aria-label="soon" tabindex="0"><span class="word-text">soon</span><span class="check-mark">✓</span></div><div class="word-card" data-word="south" role="button" aria-label="south" tabindex="0"><span class="word-text">south</span><span class="check-mark">✓</span></div><div class="word-card" data-word="space" role="button" aria-label="space" tabindex="0"><span class="word-text">space</span><span class="check-mark">✓</span></div><div class="word-card" data-word="stand" role="button" aria-label="stand" tabindex="0"><span class="word-text">stand</span><span class="check-mark">✓</span></div><div class="word-card" data-word="start" role="button" aria-label="start" tabindex="0"><span class="word-text">start</span><span class="check-mark">✓</span></div><div class="word-card" data-word="state" role="button" aria-label="state" tabindex="0"><span class="word-text">state</span><span class="check-mark">✓</span></div><div class="word-card" data-word="stay" role="button" aria-label="stay" tabindex="0"><span class="word-text">stay</span><span class="check-mark">✓</span></div><div class="word-card" data-word="still" role="button" aria-label="still" tabindex="0"><span class="word-text">still</span><span class="check-mark">✓</span></div><div class="word-card" data-word="story" role="button" aria-label="story" tabindex="0"><span class="word-text">story</span><span class="check-mark">✓</span></div><div class="word-card" data-word="study" role="button" aria-label="study" tabindex="0"><span class="word-text">study</span><span class="check-mark">✓</span></div><div class="word-card" data-word="such" role="button" aria-label="such" tabindex="0"><span class="word-text">such</span><span class="check-mark">✓</span></div><div class="word-card" data-word="sun" role="button" aria-label="sun" tabindex="0"><span class="word-text">sun</span><span class="check-mark">✓</span></div><div class="word-card" data-word="sure" role="button" aria-label="sure" tabindex="0"><span class="word-text">sure</span><span class="check-mark">✓</span></div><div class="word-card" data-word="system" role="button" aria-label="system" tabindex="0"><span class="word-text">system</span><span class="check-mark">✓</span></div><div class="word-card" data-word="table" role="button" aria-label="table" tabindex="0"><span class="word-text">table</span><span class="check-mark">✓</span></div><div class="word-card" data-word="talk" role="button" aria-label="talk" tabindex="0"><span class="word-text">talk</span><span class="check-mark">✓</span></div><div class="word-card" data-word="teach" role="button" aria-label="teach" tabindex="0"><span class="word-text">teach</span><span class="check-mark">✓</span></div><div class="word-card" data-word="than" role="button" aria-label="than" tabindex="0"><span class="word-text">than</span><span class="check-mark">✓</span></div><div class="word-card" data-word="thought" role="button" aria-label="thought" tabindex="0"><span class="word-text">thought</span><span class="check-mark">✓</span></div><div class="word-card" data-word="through" role="button" aria-label="through" tabindex="0"><span class="word-text">through</span><span class="check-mark">✓</span></div><div class="word-card" data-word="together" role="button" aria-label="together" tabindex="0"><span class="word-text">together</span><span class="check-mark">✓</span></div><div class="word-card" data-word="took" role="button" aria-label="took" tabindex="0"><span class="word-text">took</span><span class="check-mark">✓</span></div><div class="word-card" data-word="top" role="button" aria-label="top" tabindex="0"><span class="word-text">top</span><span class="check-mark">✓</span></div><div class="word-card" data-word="town" role="button" aria-label="town" tabindex="0"><span class="word-text">town</span><span class="check-mark">✓</span></div><div class="word-card" data-word="tree" role="button" aria-label="tree" tabindex="0"><span class="word-text">tree</span><span class="check-mark">✓</span></div><div class="word-card" data-word="true" role="button" aria-label="true" tabindex="0"><span class="word-text">true</span><span class="check-mark">✓</span></div><div class="word-card" data-word="turn" role="button" aria-label="turn" tabindex="0"><span class="word-text">turn</span><span class="check-mark">✓</span></div><div class="word-card" data-word="until" role="button" aria-label="until" tabindex="0"><span class="word-text">until</span><span class="check-mark">✓</span></div><div class="word-card" data-word="usually" role="button" aria-label="usually" tabindex="0"><span class="word-text">usually</span><span class="check-mark">✓</span></div><div class="word-card" data-word="voice" role="button" aria-label="voice" tabindex="0"><span class="word-text">voice</span><span class="check-mark">✓</span></div><div class="word-card" data-word="watch" role="button" aria-label="watch" tabindex="0"><span class="word-text">watch</span><span class="check-mark">✓</span></div><div class="word-card" data-word="water" role="button" aria-label="water" tabindex="0"><span class="word-text">water</span><span class="check-mark">✓</span></div><div class="word-card" data-word="way" role="button" aria-label="way" tabindex="0"><span class="word-text">way</span><span class="check-mark">✓</span></div><div class="word-card" data-word="week" role="button" aria-label="week" tabindex="0"><span class="word-text">week</span><span class="check-mark">✓</span></div><div class="word-card" data-word="while" role="button" aria-label="while" tabindex="0"><span class="word-text">while</span><span class="check-mark">✓</span></div><div class="word-card" data-word="wind" role="button" aria-label="wind" tabindex="0"><span class="word-text">wind</span><span class="check-mark">✓</span></div><div class="word-card" data-word="without" role="button" aria-label="without" tabindex="0"><span class="word-text">without</span><span class="check-mark">✓</span></div><div class="word-card" data-word="word" role="button" aria-label="word" tabindex="0"><span class="word-text">word</span><span class="check-mark">✓</span></div><div class="word-card" data-word="world" role="button" aria-label="world" tabindex="0"><span class="word-text">world</span><span class="check-mark">✓</span></div><div class="word-card" data-word="young" role="button" aria-label="young" tabindex="0"><span class="word-text">young</span><span class="check-mark">✓</span></div></div>
+    </div><div id="no-results" class="no-results" style="display: none;">No words match your search.</div></main>
+<footer>500 sight words based on Dolch &amp; Fry lists • Progress saved in your browser</footer>
+
+<script>
+const levels = [
+  {
+    id: 1, cls: 'l1',
+    name: 'Pre-K (Dolch Pre-Primer)',
+    words: ['a','and','away','big','blue','can','come','down','find','for','funny','go','help','here','I','in','is','it','jump','little','look','make','me','my','not','one','play','red','run','said','see','the','three','to','two','up','we','where','yellow','you']
+  },
+  {
+    id: 2, cls: 'l2',
+    name: 'Kindergarten (Dolch Primer)',
+    words: ['all','am','are','at','ate','be','black','brown','but','came','did','do','eat','four','get','good','have','he','into','like','must','new','no','now','on','our','out','please','pretty','ran','ride','saw','say','she','so','soon','that','there','they','this','too','under','want','was','well','went','what','white','who','will','with','yes']
+  },
+  {
+    id: 3, cls: 'l3',
+    name: 'Grade 1 (Dolch Grade 1)',
+    words: ['after','again','an','any','as','ask','by','could','every','fly','from','give','going','had','has','her','him','his','how','just','know','let','live','may','of','old','once','open','over','put','round','some','stop','take','thank','them','think','walk','were','when']
+  },
+  {
+    id: 4, cls: 'l4',
+    name: 'Grade 2 (Dolch Grade 2)',
+    words: ['always','around','because','been','before','best','both','buy','call','cold','does','don\'t','fast','first','five','found','gave','goes','green','its','made','many','off','or','pull','read','right','sing','sit','sleep','tell','their','these','those','upon','us','use','very','wash','which','why','wish','work','would','write','your']
+  },
+  {
+    id: 5, cls: 'l5',
+    name: 'Grade 3+ (Fry High-Frequency)',
+    words: [
+      'about','above','across','add','age','ago','air','also','another','back',
+      'ball','bank','base','become','between','body','book','box','boy','bring',
+      'build','car','care','carry','change','city','close','color','come','cut',
+      'dark','day','different','door','draw','drive','drop','during','each','earth',
+      'easy','end','enough','even','example','eye','face','fact','fall','family',
+      'far','feel','feet','few','fire','follow','food','form','found','front',
+      'full','game','girl','got','ground','group','grow','hand','hard','head',
+      'hear','high','hold','home','horse','hour','house','idea','important','Indian',
+      'keep','kind','land','large','last','late','learn','left','life','light',
+      'line','list','long','look','love','low','man','map','mark','men',
+      'mile','miss','money','moon','morning','mountain','move','much','music','name',
+      'near','never','next','night','north','note','nothing','number','often','open',
+      'order','page','paper','part','pass','past','pattern','people','place','plan',
+      'plant','play','point','port','press','problem','product','question','quickly','quite',
+      'real','rest','river','rock','room','rule','run','same','school','sea',
+      'second','seem','sentence','set','several','side','small','something','sometimes','song',
+      'soon','south','space','stand','start','state','stay','still','story','study',
+      'such','sun','sure','system','table','talk','teach','than','thought','through',
+      'together','took','top','town','tree','true','turn','until','usually','voice',
+      'watch','water','way','week','while','wind','without','word','world','young'
+    ]
+  }
+];
+
+let activeFilter = 'all';
+let learned = JSON.parse(localStorage.getItem('sightwords_learned') || '{}');
+
+function save() {
+  localStorage.setItem('sightwords_learned', JSON.stringify(learned));
+  updateCounter();
+}
+
+function updateCounter() {
+  const count = Object.values(learned).filter(Boolean).length;
+  document.getElementById('learned-count').textContent = count;
+  document.getElementById('main-progress').style.width = (count / 500 * 100).toFixed(1) + '%';
+}
+
+function toggleWord(word) {
+  learned[word] = !learned[word];
+  save();
+  const card = document.querySelector(`[data-word="${word}"]`);
+  if (card) card.classList.toggle('learned', !!learned[word]);
+}
+
+function setFilter(level, btn) {
+  activeFilter = level;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterWords();
+}
+
+function filterWords() {
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  let anyVisible = false;
+
+  levels.forEach(level => {
+    const section = document.getElementById('section-' + level.id);
+    if (!section) return;
+    if (activeFilter !== 'all' && activeFilter !== String(level.id)) {
+      section.style.display = 'none';
+      return;
+    }
+
+    const cards = section.querySelectorAll('.word-card');
+    let visibleInSection = 0;
+    cards.forEach(card => {
+      const word = card.dataset.word;
+      const match = !q || word.includes(q);
+      card.style.display = match ? '' : 'none';
+      if (match) visibleInSection++;
+    });
+
+    section.style.display = visibleInSection ? '' : 'none';
+    if (visibleInSection) anyVisible = true;
+  });
+
+  document.getElementById('no-results').style.display = anyVisible ? 'none' : '';
+}
+
+function resetAll() {
+  if (!confirm('Reset all progress? This cannot be undone.')) return;
+  learned = {};
+  save();
+  document.querySelectorAll('.word-card').forEach(c => c.classList.remove('learned'));
+}
+
+function render() {
+  const main = document.getElementById('main');
+  main.innerHTML = '';
+
+  levels.forEach(level => {
+    const section = document.createElement('div');
+    section.className = 'level-section ' + level.cls;
+    section.id = 'section-' + level.id;
+
+    section.innerHTML = `
+      <div class="level-header">
+        <span class="level-name"><span class="level-dot"></span>${level.name}</span>
+        <span class="level-count">${level.words.length} words</span>
+      </div>
+      <div class="word-grid" id="grid-${level.id}"></div>
+    `;
+    main.appendChild(section);
+
+    const grid = section.querySelector('.word-grid');
+    level.words.forEach(word => {
+      const card = document.createElement('div');
+      card.className = 'word-card' + (learned[word] ? ' learned' : '');
+      card.dataset.word = word;
+      card.setAttribute('role', 'button');
+      card.setAttribute('aria-label', word + (learned[word] ? ' - learned' : ''));
+      card.setAttribute('tabindex', '0');
+      card.innerHTML = `<span class="word-text">${word}</span><span class="check-mark">✓</span>`;
+      card.onclick = () => toggleWord(word);
+      card.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') toggleWord(word); };
+      grid.appendChild(card);
+    });
+  });
+
+  const noRes = document.createElement('div');
+  noRes.id = 'no-results';
+  noRes.className = 'no-results';
+  noRes.style.display = 'none';
+  noRes.textContent = 'No words match your search.';
+  main.appendChild(noRes);
+
+  updateCounter();
+}
+
+render();
+</script>
+
+
+</body></html>
