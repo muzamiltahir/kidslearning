@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interactive phonics word lists with saved learning progress.">
+  <title>Phonics Word Lists</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Phonics Word Lists</title>
-<link href="/phonics_css2" rel="stylesheet">
-<style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+
+  <style>
 :root {
   --bg: #F8F5F0;
   --surface: #FFFFFF;
@@ -258,133 +264,122 @@ h1 {
 .s8 .prog-fill { background: var(--c8); }
 
 footer { text-align: center; color: var(--muted); font-size: 13px; margin-top: 3rem; }
-</style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .subgroup-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      margin: 0 0 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 8px;
+      margin-left: auto;
+    }
+
+    .reset-button {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1.5px solid var(--border);
+      font: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--surface);
+      color: var(--muted);
+      transition: all 0.15s;
+    }
+
+    .reset-button:hover {
+      border-color: #b33;
+      color: #b33;
+    }
+
+    .word-pill:focus-visible,
+    .cvc-card:focus-visible,
+    .nav-pill:focus-visible,
+    .reset-button:focus-visible {
+      outline: 3px solid currentColor;
+      outline-offset: 2px;
+    }
+
+    .prog-track {
+      position: relative;
+    }
+
+    @media (max-width: 700px) {
+      body {
+        padding: 1.25rem 1rem 3rem;
+      }
+
+      .nav-pills {
+        gap: 6px;
+      }
+
+      .nav-pill,
+      .reset-button {
+        padding: 6px 10px;
+      }
+
+      .section-header {
+        align-items: flex-start;
+        flex-wrap: wrap;
+      }
+
+      .section-desc {
+        flex-basis: 100%;
+        margin-left: 0;
+      }
+
+      .nav-actions {
+        margin-left: 0;
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *, *::before, *::after {
+        transition: none !important;
+      }
+    }
+  </style>
 </head>
+
 <body>
+  <header>
+    <h1>Phonics Word Lists</h1>
+    <p class="subtitle">Click or press Enter/Space on any word to mark it as learned — progress saves in your browser.</p>
+  </header>
 
-<h1>Phonics Word Lists</h1>
-<p class="subtitle">Tap any word to mark it as learned — progress saves in your browser</p>
+  <nav class="nav-pills" aria-label="Jump to section">
+    <a class="nav-pill" href="#s1">1. CVC</a>
+    <a class="nav-pill" href="#s2">2. Blends</a>
+    <a class="nav-pill" href="#s3">3. Digraphs</a>
+    <a class="nav-pill" href="#s4">4. Magic E</a>
+    <a class="nav-pill" href="#s5">5. Vowel Teams</a>
+    <a class="nav-pill" href="#s6">6. Bossy R</a>
+    <a class="nav-pill" href="#s7">7. Diphthongs</a>
+    <a class="nav-pill" href="#s8">8. Silent Letters</a>
+    <div class="nav-actions">
+      <button class="reset-button" id="reset-progress" type="button">Reset progress</button>
+    </div>
+  </nav>
 
-<nav class="nav-pills" aria-label="Jump to section">
-  <a class="nav-pill" href="file:///C:/Users/shora/Downloads/phonics-word-list.html#s1">1. CVC</a>
-  <a class="nav-pill" href="file:///C:/Users/shora/Downloads/phonics-word-list.html#s2">2. Blends</a>
-  <a class="nav-pill" href="file:///C:/Users/shora/Downloads/phonics-word-list.html#s3">3. Digraphs</a>
-  <a class="nav-pill" href="file:///C:/Users/shora/Downloads/phonics-word-list.html#s4">4. Magic E</a>
-  <a class="nav-pill" href="file:///C:/Users/shora/Downloads/phonics-word-list.html#s5">5. Vowel Teams</a>
-  <a class="nav-pill" href="file:///C:/Users/shora/Downloads/phonics-word-list.html#s6">6. Bossy R</a>
-  <a class="nav-pill" href="file:///C:/Users/shora/Downloads/phonics-word-list.html#s7">7. Diphthongs</a>
-  <a class="nav-pill" href="file:///C:/Users/shora/Downloads/phonics-word-list.html#s8">8. Silent Letters</a>
-</nav>
+  <main id="app" aria-live="polite"></main>
 
-<div id="app"><div class="section s1" id="s1">
-      <div class="section-header">
-        <span class="section-number">01</span>
-        <span class="section-title">CVC Words</span>
-        <span class="section-desc">Consonant–Vowel–Consonant</span>
-      </div>
-      <div class="prog-wrap">
-        <div class="prog-label">
-          <span>Progress</span>
-          <span id="proglbl-1">0 / 211 learned</span>
-        </div>
-        <div class="prog-track"><div class="prog-fill" id="prog-1" style="width:0.0%"></div></div>
-      </div>
-    <div><p style="font-size: 13px; font-weight: 600; color: var(--muted); margin: 0px 0px 8px; text-transform: uppercase; letter-spacing: 0.05em;">-a- words</p><div class="cvc-grid" style="margin-bottom: 1.25rem;"><div class="cvc-card">bat<span class="vowel-tag">a</span></div><div class="cvc-card">cat<span class="vowel-tag">a</span></div><div class="cvc-card">hat<span class="vowel-tag">a</span></div><div class="cvc-card">mat<span class="vowel-tag">a</span></div><div class="cvc-card">rat<span class="vowel-tag">a</span></div><div class="cvc-card">sat<span class="vowel-tag">a</span></div><div class="cvc-card">pat<span class="vowel-tag">a</span></div><div class="cvc-card">fan<span class="vowel-tag">a</span></div><div class="cvc-card">can<span class="vowel-tag">a</span></div><div class="cvc-card">man<span class="vowel-tag">a</span></div><div class="cvc-card">pan<span class="vowel-tag">a</span></div><div class="cvc-card">ran<span class="vowel-tag">a</span></div><div class="cvc-card">tan<span class="vowel-tag">a</span></div><div class="cvc-card">van<span class="vowel-tag">a</span></div><div class="cvc-card">bad<span class="vowel-tag">a</span></div><div class="cvc-card">dad<span class="vowel-tag">a</span></div><div class="cvc-card">had<span class="vowel-tag">a</span></div><div class="cvc-card">mad<span class="vowel-tag">a</span></div><div class="cvc-card">sad<span class="vowel-tag">a</span></div><div class="cvc-card">bag<span class="vowel-tag">a</span></div><div class="cvc-card">rag<span class="vowel-tag">a</span></div><div class="cvc-card">tag<span class="vowel-tag">a</span></div><div class="cvc-card">wag<span class="vowel-tag">a</span></div><div class="cvc-card">nag<span class="vowel-tag">a</span></div><div class="cvc-card">cap<span class="vowel-tag">a</span></div><div class="cvc-card">lap<span class="vowel-tag">a</span></div><div class="cvc-card">map<span class="vowel-tag">a</span></div><div class="cvc-card">nap<span class="vowel-tag">a</span></div><div class="cvc-card">tap<span class="vowel-tag">a</span></div><div class="cvc-card">jam<span class="vowel-tag">a</span></div><div class="cvc-card">ham<span class="vowel-tag">a</span></div><div class="cvc-card">yam<span class="vowel-tag">a</span></div><div class="cvc-card">ram<span class="vowel-tag">a</span></div><div class="cvc-card">dam<span class="vowel-tag">a</span></div><div class="cvc-card">cab<span class="vowel-tag">a</span></div><div class="cvc-card">jab<span class="vowel-tag">a</span></div><div class="cvc-card">lab<span class="vowel-tag">a</span></div><div class="cvc-card">tab<span class="vowel-tag">a</span></div><div class="cvc-card">dab<span class="vowel-tag">a</span></div><div class="cvc-card">gas<span class="vowel-tag">a</span></div><div class="cvc-card">has<span class="vowel-tag">a</span></div><div class="cvc-card">pass<span class="vowel-tag">a</span></div><div class="cvc-card">mass<span class="vowel-tag">a</span></div><div class="cvc-card">jazz<span class="vowel-tag">a</span></div><div class="cvc-card">back<span class="vowel-tag">a</span></div><div class="cvc-card">lack<span class="vowel-tag">a</span></div><div class="cvc-card">rack<span class="vowel-tag">a</span></div><div class="cvc-card">sack<span class="vowel-tag">a</span></div><div class="cvc-card">tack<span class="vowel-tag">a</span></div></div><p style="font-size: 13px; font-weight: 600; color: var(--muted); margin: 0px 0px 8px; text-transform: uppercase; letter-spacing: 0.05em;">-e- words</p><div class="cvc-grid" style="margin-bottom: 1.25rem;"><div class="cvc-card">bed<span class="vowel-tag">e</span></div><div class="cvc-card">fed<span class="vowel-tag">e</span></div><div class="cvc-card">led<span class="vowel-tag">e</span></div><div class="cvc-card">red<span class="vowel-tag">e</span></div><div class="cvc-card">wed<span class="vowel-tag">e</span></div><div class="cvc-card">beg<span class="vowel-tag">e</span></div><div class="cvc-card">leg<span class="vowel-tag">e</span></div><div class="cvc-card">peg<span class="vowel-tag">e</span></div><div class="cvc-card">keg<span class="vowel-tag">e</span></div><div class="cvc-card">hen<span class="vowel-tag">e</span></div><div class="cvc-card">den<span class="vowel-tag">e</span></div><div class="cvc-card">men<span class="vowel-tag">e</span></div><div class="cvc-card">pen<span class="vowel-tag">e</span></div><div class="cvc-card">ten<span class="vowel-tag">e</span></div><div class="cvc-card">yet<span class="vowel-tag">e</span></div><div class="cvc-card">bet<span class="vowel-tag">e</span></div><div class="cvc-card">get<span class="vowel-tag">e</span></div><div class="cvc-card">jet<span class="vowel-tag">e</span></div><div class="cvc-card">let<span class="vowel-tag">e</span></div><div class="cvc-card">met<span class="vowel-tag">e</span></div><div class="cvc-card">net<span class="vowel-tag">e</span></div><div class="cvc-card">pet<span class="vowel-tag">e</span></div><div class="cvc-card">set<span class="vowel-tag">e</span></div><div class="cvc-card">wet<span class="vowel-tag">e</span></div><div class="cvc-card">bell<span class="vowel-tag">e</span></div><div class="cvc-card">fell<span class="vowel-tag">e</span></div><div class="cvc-card">sell<span class="vowel-tag">e</span></div><div class="cvc-card">tell<span class="vowel-tag">e</span></div><div class="cvc-card">well<span class="vowel-tag">e</span></div><div class="cvc-card">yell<span class="vowel-tag">e</span></div><div class="cvc-card">best<span class="vowel-tag">e</span></div><div class="cvc-card">nest<span class="vowel-tag">e</span></div><div class="cvc-card">rest<span class="vowel-tag">e</span></div><div class="cvc-card">test<span class="vowel-tag">e</span></div><div class="cvc-card">vest<span class="vowel-tag">e</span></div><div class="cvc-card">west<span class="vowel-tag">e</span></div><div class="cvc-card">deck<span class="vowel-tag">e</span></div><div class="cvc-card">neck<span class="vowel-tag">e</span></div><div class="cvc-card">peck<span class="vowel-tag">e</span></div><div class="cvc-card">check<span class="vowel-tag">h</span></div><div class="cvc-card">wren<span class="vowel-tag">r</span></div><div class="cvc-card">shed<span class="vowel-tag">h</span></div></div><p style="font-size: 13px; font-weight: 600; color: var(--muted); margin: 0px 0px 8px; text-transform: uppercase; letter-spacing: 0.05em;">-i- words</p><div class="cvc-grid" style="margin-bottom: 1.25rem;"><div class="cvc-card">bit<span class="vowel-tag">i</span></div><div class="cvc-card">fit<span class="vowel-tag">i</span></div><div class="cvc-card">hit<span class="vowel-tag">i</span></div><div class="cvc-card">kit<span class="vowel-tag">i</span></div><div class="cvc-card">pit<span class="vowel-tag">i</span></div><div class="cvc-card">sit<span class="vowel-tag">i</span></div><div class="cvc-card">wit<span class="vowel-tag">i</span></div><div class="cvc-card">big<span class="vowel-tag">i</span></div><div class="cvc-card">dig<span class="vowel-tag">i</span></div><div class="cvc-card">fig<span class="vowel-tag">i</span></div><div class="cvc-card">jig<span class="vowel-tag">i</span></div><div class="cvc-card">pig<span class="vowel-tag">i</span></div><div class="cvc-card">wig<span class="vowel-tag">i</span></div><div class="cvc-card">bin<span class="vowel-tag">i</span></div><div class="cvc-card">fin<span class="vowel-tag">i</span></div><div class="cvc-card">pin<span class="vowel-tag">i</span></div><div class="cvc-card">sin<span class="vowel-tag">i</span></div><div class="cvc-card">tin<span class="vowel-tag">i</span></div><div class="cvc-card">win<span class="vowel-tag">i</span></div><div class="cvc-card">bid<span class="vowel-tag">i</span></div><div class="cvc-card">did<span class="vowel-tag">i</span></div><div class="cvc-card">hid<span class="vowel-tag">i</span></div><div class="cvc-card">kid<span class="vowel-tag">i</span></div><div class="cvc-card">lid<span class="vowel-tag">i</span></div><div class="cvc-card">rid<span class="vowel-tag">i</span></div><div class="cvc-card">bill<span class="vowel-tag">i</span></div><div class="cvc-card">fill<span class="vowel-tag">i</span></div><div class="cvc-card">hill<span class="vowel-tag">i</span></div><div class="cvc-card">kill<span class="vowel-tag">i</span></div><div class="cvc-card">mill<span class="vowel-tag">i</span></div><div class="cvc-card">pill<span class="vowel-tag">i</span></div><div class="cvc-card">till<span class="vowel-tag">i</span></div><div class="cvc-card">will<span class="vowel-tag">i</span></div><div class="cvc-card">dip<span class="vowel-tag">i</span></div><div class="cvc-card">hip<span class="vowel-tag">i</span></div><div class="cvc-card">lip<span class="vowel-tag">i</span></div><div class="cvc-card">rip<span class="vowel-tag">i</span></div><div class="cvc-card">sip<span class="vowel-tag">i</span></div><div class="cvc-card">tip<span class="vowel-tag">i</span></div><div class="cvc-card">zip<span class="vowel-tag">i</span></div><div class="cvc-card">fix<span class="vowel-tag">i</span></div><div class="cvc-card">mix<span class="vowel-tag">i</span></div><div class="cvc-card">six<span class="vowel-tag">i</span></div></div><p style="font-size: 13px; font-weight: 600; color: var(--muted); margin: 0px 0px 8px; text-transform: uppercase; letter-spacing: 0.05em;">-o- words</p><div class="cvc-grid" style="margin-bottom: 1.25rem;"><div class="cvc-card">bog<span class="vowel-tag">o</span></div><div class="cvc-card">dog<span class="vowel-tag">o</span></div><div class="cvc-card">fog<span class="vowel-tag">o</span></div><div class="cvc-card">hog<span class="vowel-tag">o</span></div><div class="cvc-card">log<span class="vowel-tag">o</span></div><div class="cvc-card">cob<span class="vowel-tag">o</span></div><div class="cvc-card">job<span class="vowel-tag">o</span></div><div class="cvc-card">mob<span class="vowel-tag">o</span></div><div class="cvc-card">rob<span class="vowel-tag">o</span></div><div class="cvc-card">sob<span class="vowel-tag">o</span></div><div class="cvc-card">cod<span class="vowel-tag">o</span></div><div class="cvc-card">god<span class="vowel-tag">o</span></div><div class="cvc-card">mod<span class="vowel-tag">o</span></div><div class="cvc-card">nod<span class="vowel-tag">o</span></div><div class="cvc-card">pod<span class="vowel-tag">o</span></div><div class="cvc-card">rod<span class="vowel-tag">o</span></div><div class="cvc-card">cog<span class="vowel-tag">o</span></div><div class="cvc-card">jog<span class="vowel-tag">o</span></div><div class="cvc-card">mop<span class="vowel-tag">o</span></div><div class="cvc-card">hop<span class="vowel-tag">o</span></div><div class="cvc-card">pop<span class="vowel-tag">o</span></div><div class="cvc-card">top<span class="vowel-tag">o</span></div><div class="cvc-card">cop<span class="vowel-tag">o</span></div><div class="cvc-card">drop<span class="vowel-tag">r</span></div><div class="cvc-card">box<span class="vowel-tag">o</span></div><div class="cvc-card">fox<span class="vowel-tag">o</span></div><div class="cvc-card">hot<span class="vowel-tag">o</span></div><div class="cvc-card">lot<span class="vowel-tag">o</span></div><div class="cvc-card">not<span class="vowel-tag">o</span></div><div class="cvc-card">pot<span class="vowel-tag">o</span></div><div class="cvc-card">rot<span class="vowel-tag">o</span></div><div class="cvc-card">dot<span class="vowel-tag">o</span></div><div class="cvc-card">got<span class="vowel-tag">o</span></div><div class="cvc-card">odd<span class="vowel-tag">d</span></div><div class="cvc-card">off<span class="vowel-tag">f</span></div><div class="cvc-card">boss<span class="vowel-tag">o</span></div><div class="cvc-card">loss<span class="vowel-tag">o</span></div><div class="cvc-card">toss<span class="vowel-tag">o</span></div></div><p style="font-size: 13px; font-weight: 600; color: var(--muted); margin: 0px 0px 8px; text-transform: uppercase; letter-spacing: 0.05em;">-u- words</p><div class="cvc-grid" style="margin-bottom: 1.25rem;"><div class="cvc-card">bug<span class="vowel-tag">u</span></div><div class="cvc-card">dug<span class="vowel-tag">u</span></div><div class="cvc-card">hug<span class="vowel-tag">u</span></div><div class="cvc-card">jug<span class="vowel-tag">u</span></div><div class="cvc-card">mug<span class="vowel-tag">u</span></div><div class="cvc-card">rug<span class="vowel-tag">u</span></div><div class="cvc-card">tug<span class="vowel-tag">u</span></div><div class="cvc-card">bun<span class="vowel-tag">u</span></div><div class="cvc-card">fun<span class="vowel-tag">u</span></div><div class="cvc-card">gun<span class="vowel-tag">u</span></div><div class="cvc-card">nun<span class="vowel-tag">u</span></div><div class="cvc-card">pun<span class="vowel-tag">u</span></div><div class="cvc-card">run<span class="vowel-tag">u</span></div><div class="cvc-card">sun<span class="vowel-tag">u</span></div><div class="cvc-card">bud<span class="vowel-tag">u</span></div><div class="cvc-card">mud<span class="vowel-tag">u</span></div><div class="cvc-card">bus<span class="vowel-tag">u</span></div><div class="cvc-card">gus<span class="vowel-tag">u</span></div><div class="cvc-card">but<span class="vowel-tag">u</span></div><div class="cvc-card">cut<span class="vowel-tag">u</span></div><div class="cvc-card">gut<span class="vowel-tag">u</span></div><div class="cvc-card">hut<span class="vowel-tag">u</span></div><div class="cvc-card">nut<span class="vowel-tag">u</span></div><div class="cvc-card">put<span class="vowel-tag">u</span></div><div class="cvc-card">rut<span class="vowel-tag">u</span></div><div class="cvc-card">sub<span class="vowel-tag">u</span></div><div class="cvc-card">tub<span class="vowel-tag">u</span></div><div class="cvc-card">cup<span class="vowel-tag">u</span></div><div class="cvc-card">pup<span class="vowel-tag">u</span></div><div class="cvc-card">up<span class="vowel-tag">p</span></div><div class="cvc-card">us<span class="vowel-tag">s</span></div><div class="cvc-card">buzz<span class="vowel-tag">u</span></div><div class="cvc-card">fuzz<span class="vowel-tag">u</span></div><div class="cvc-card">dull<span class="vowel-tag">u</span></div><div class="cvc-card">full<span class="vowel-tag">u</span></div><div class="cvc-card">gull<span class="vowel-tag">u</span></div><div class="cvc-card">pull<span class="vowel-tag">u</span></div><div class="cvc-card">bull<span class="vowel-tag">u</span></div><div class="cvc-card">hull<span class="vowel-tag">u</span></div></div></div></div><div class="section s2" id="s2">
-      <div class="section-header">
-        <span class="section-number">02</span>
-        <span class="section-title">Blends</span>
-        <span class="section-desc">Two or three consonants blended together</span>
-      </div>
-      <div class="prog-wrap">
-        <div class="prog-label">
-          <span>Progress</span>
-          <span id="proglbl-2">0 / 300 learned</span>
-        </div>
-        <div class="prog-track"><div class="prog-fill" id="prog-2" style="width:0.0%"></div></div>
-      </div>
-    <div class="group-grid"><div class="group-widget"><div class="group-header"><span class="group-label">bl-</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">black</span><span class="word-pill">blank</span><span class="word-pill">blast</span><span class="word-pill">bleed</span><span class="word-pill">blend</span><span class="word-pill">bless</span><span class="word-pill">blind</span><span class="word-pill">block</span><span class="word-pill">blood</span><span class="word-pill">blue</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">br-</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">brag</span><span class="word-pill">brat</span><span class="word-pill">brave</span><span class="word-pill">bread</span><span class="word-pill">break</span><span class="word-pill">brick</span><span class="word-pill">bridge</span><span class="word-pill">bright</span><span class="word-pill">bring</span><span class="word-pill">brush</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">cl-</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">clam</span><span class="word-pill">clap</span><span class="word-pill">class</span><span class="word-pill">claw</span><span class="word-pill">clay</span><span class="word-pill">clean</span><span class="word-pill">climb</span><span class="word-pill">clip</span><span class="word-pill">clock</span><span class="word-pill">cloud</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">cr-</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">crab</span><span class="word-pill">crack</span><span class="word-pill">crash</span><span class="word-pill">crawl</span><span class="word-pill">cream</span><span class="word-pill">creek</span><span class="word-pill">crisp</span><span class="word-pill">crop</span><span class="word-pill">cross</span><span class="word-pill">crown</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">dr-</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">drag</span><span class="word-pill">drain</span><span class="word-pill">draw</span><span class="word-pill">dream</span><span class="word-pill">dress</span><span class="word-pill">drip</span><span class="word-pill">drive</span><span class="word-pill">drop</span><span class="word-pill">drum</span><span class="word-pill">dry</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">fl-</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">flag</span><span class="word-pill">flame</span><span class="word-pill">flat</span><span class="word-pill">flaw</span><span class="word-pill">flea</span><span class="word-pill">flew</span><span class="word-pill">flip</span><span class="word-pill">float</span><span class="word-pill">flock</span><span class="word-pill">flow</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">fr-</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">frame</span><span class="word-pill">free</span><span class="word-pill">fresh</span><span class="word-pill">frog</span><span class="word-pill">from</span><span class="word-pill">front</span><span class="word-pill">frost</span><span class="word-pill">frown</span><span class="word-pill">fruit</span><span class="word-pill">fry</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">gl-</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">glad</span><span class="word-pill">glass</span><span class="word-pill">glide</span><span class="word-pill">gloom</span><span class="word-pill">glow</span><span class="word-pill">glue</span><span class="word-pill">glare</span><span class="word-pill">glen</span><span class="word-pill">glint</span><span class="word-pill">glob</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">gr-</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">grab</span><span class="word-pill">grade</span><span class="word-pill">grape</span><span class="word-pill">grass</span><span class="word-pill">gray</span><span class="word-pill">great</span><span class="word-pill">green</span><span class="word-pill">grin</span><span class="word-pill">grip</span><span class="word-pill">grow</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">pl-</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">place</span><span class="word-pill">plan</span><span class="word-pill">plane</span><span class="word-pill">plant</span><span class="word-pill">play</span><span class="word-pill">please</span><span class="word-pill">plot</span><span class="word-pill">plow</span><span class="word-pill">plug</span><span class="word-pill">plum</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">pr-</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">press</span><span class="word-pill">price</span><span class="word-pill">pride</span><span class="word-pill">print</span><span class="word-pill">prize</span><span class="word-pill">probe</span><span class="word-pill">proof</span><span class="word-pill">prop</span><span class="word-pill">proud</span><span class="word-pill">pry</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">sc-</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">scab</span><span class="word-pill">scale</span><span class="word-pill">scar</span><span class="word-pill">scat</span><span class="word-pill">scene</span><span class="word-pill">scone</span><span class="word-pill">scoop</span><span class="word-pill">scope</span><span class="word-pill">score</span><span class="word-pill">scout</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">sk-</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">skate</span><span class="word-pill">ski</span><span class="word-pill">skill</span><span class="word-pill">skin</span><span class="word-pill">skip</span><span class="word-pill">sky</span><span class="word-pill">sketch</span><span class="word-pill">skull</span><span class="word-pill">skunk</span><span class="word-pill">skew</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">sl-</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">slam</span><span class="word-pill">slap</span><span class="word-pill">sled</span><span class="word-pill">sleep</span><span class="word-pill">slim</span><span class="word-pill">slip</span><span class="word-pill">slow</span><span class="word-pill">slug</span><span class="word-pill">slum</span><span class="word-pill">slush</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">sm-</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">small</span><span class="word-pill">smart</span><span class="word-pill">smell</span><span class="word-pill">smile</span><span class="word-pill">smock</span><span class="word-pill">smoke</span><span class="word-pill">smooth</span><span class="word-pill">smudge</span><span class="word-pill">smug</span><span class="word-pill">smash</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">sn-</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">snack</span><span class="word-pill">snag</span><span class="word-pill">snap</span><span class="word-pill">sneak</span><span class="word-pill">sniff</span><span class="word-pill">snow</span><span class="word-pill">snug</span><span class="word-pill">snake</span><span class="word-pill">snore</span><span class="word-pill">snout</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">sp-</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">space</span><span class="word-pill">span</span><span class="word-pill">spark</span><span class="word-pill">speak</span><span class="word-pill">speed</span><span class="word-pill">spin</span><span class="word-pill">spot</span><span class="word-pill">spray</span><span class="word-pill">spring</span><span class="word-pill">spy</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">st-</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">stack</span><span class="word-pill">stage</span><span class="word-pill">stamp</span><span class="word-pill">stand</span><span class="word-pill">star</span><span class="word-pill">step</span><span class="word-pill">stick</span><span class="word-pill">stop</span><span class="word-pill">store</span><span class="word-pill">string</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">sw-</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">swam</span><span class="word-pill">swan</span><span class="word-pill">swap</span><span class="word-pill">swear</span><span class="word-pill">sweep</span><span class="word-pill">sweet</span><span class="word-pill">swift</span><span class="word-pill">swim</span><span class="word-pill">swing</span><span class="word-pill">swoop</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">tr-</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">track</span><span class="word-pill">trade</span><span class="word-pill">trail</span><span class="word-pill">train</span><span class="word-pill">trap</span><span class="word-pill">tree</span><span class="word-pill">trip</span><span class="word-pill">truck</span><span class="word-pill">true</span><span class="word-pill">trunk</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">tw-</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">tweak</span><span class="word-pill">tweed</span><span class="word-pill">twelve</span><span class="word-pill">twice</span><span class="word-pill">twig</span><span class="word-pill">twin</span><span class="word-pill">twirl</span><span class="word-pill">twist</span><span class="word-pill">twitch</span><span class="word-pill">two</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">-nd</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">and</span><span class="word-pill">band</span><span class="word-pill">bend</span><span class="word-pill">bond</span><span class="word-pill">end</span><span class="word-pill">find</span><span class="word-pill">fond</span><span class="word-pill">hand</span><span class="word-pill">land</span><span class="word-pill">mind</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">-nk</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">bank</span><span class="word-pill">blank</span><span class="word-pill">drink</span><span class="word-pill">dunk</span><span class="word-pill">funk</span><span class="word-pill">honk</span><span class="word-pill">ink</span><span class="word-pill">link</span><span class="word-pill">pink</span><span class="word-pill">think</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">-nt</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">ant</span><span class="word-pill">bent</span><span class="word-pill">dent</span><span class="word-pill">dint</span><span class="word-pill">front</span><span class="word-pill">grant</span><span class="word-pill">hunt</span><span class="word-pill">mint</span><span class="word-pill">plant</span><span class="word-pill">rent</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">-st</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">best</span><span class="word-pill">blast</span><span class="word-pill">dust</span><span class="word-pill">fast</span><span class="word-pill">fist</span><span class="word-pill">just</span><span class="word-pill">last</span><span class="word-pill">list</span><span class="word-pill">must</span><span class="word-pill">rust</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">-lt</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">belt</span><span class="word-pill">bolt</span><span class="word-pill">built</span><span class="word-pill">felt</span><span class="word-pill">jolt</span><span class="word-pill">malt</span><span class="word-pill">melt</span><span class="word-pill">molt</span><span class="word-pill">salt</span><span class="word-pill">tilt</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">str-</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">strap</span><span class="word-pill">straw</span><span class="word-pill">stream</span><span class="word-pill">street</span><span class="word-pill">stretch</span><span class="word-pill">strict</span><span class="word-pill">string</span><span class="word-pill">strip</span><span class="word-pill">strong</span><span class="word-pill">struck</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">spr-</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">spread</span><span class="word-pill">spring</span><span class="word-pill">sprint</span><span class="word-pill">sprout</span><span class="word-pill">spray</span><span class="word-pill">spree</span><span class="word-pill">sprig</span><span class="word-pill">spruce</span><span class="word-pill">spry</span><span class="word-pill">sprinkle</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">spl-</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">splash</span><span class="word-pill">split</span><span class="word-pill">splay</span><span class="word-pill">splat</span><span class="word-pill">spleen</span><span class="word-pill">splice</span><span class="word-pill">splint</span><span class="word-pill">splurge</span><span class="word-pill">splendid</span><span class="word-pill">splotch</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">shr-</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">shred</span><span class="word-pill">shrub</span><span class="word-pill">shrug</span><span class="word-pill">shrink</span><span class="word-pill">shrimp</span><span class="word-pill">shrine</span><span class="word-pill">shriek</span><span class="word-pill">shrewd</span><span class="word-pill">shroud</span><span class="word-pill">shrill</span></div></div></div></div><div class="section s3" id="s3">
-      <div class="section-header">
-        <span class="section-number">03</span>
-        <span class="section-title">Digraphs</span>
-        <span class="section-desc">Two letters that make one sound</span>
-      </div>
-      <div class="prog-wrap">
-        <div class="prog-label">
-          <span>Progress</span>
-          <span id="proglbl-3">0 / 100 learned</span>
-        </div>
-        <div class="prog-track"><div class="prog-fill" id="prog-3" style="width:0.0%"></div></div>
-      </div>
-    <div class="group-grid"><div class="group-widget"><div class="group-header"><span class="group-label">sh</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">ship</span><span class="word-pill">shop</span><span class="word-pill">shot</span><span class="word-pill">shed</span><span class="word-pill">shin</span><span class="word-pill">she</span><span class="word-pill">show</span><span class="word-pill">shut</span><span class="word-pill">shell</span><span class="word-pill">fish</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">ch</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">chip</span><span class="word-pill">chop</span><span class="word-pill">chat</span><span class="word-pill">chin</span><span class="word-pill">chest</span><span class="word-pill">check</span><span class="word-pill">cheese</span><span class="word-pill">chain</span><span class="word-pill">chair</span><span class="word-pill">child</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">th (voiced)</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">the</span><span class="word-pill">this</span><span class="word-pill">that</span><span class="word-pill">them</span><span class="word-pill">they</span><span class="word-pill">then</span><span class="word-pill">there</span><span class="word-pill">though</span><span class="word-pill">those</span><span class="word-pill">thus</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">th (unvoiced)</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">thin</span><span class="word-pill">think</span><span class="word-pill">thank</span><span class="word-pill">three</span><span class="word-pill">throw</span><span class="word-pill">thumb</span><span class="word-pill">thud</span><span class="word-pill">thug</span><span class="word-pill">third</span><span class="word-pill">thing</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">wh</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">when</span><span class="word-pill">where</span><span class="word-pill">which</span><span class="word-pill">while</span><span class="word-pill">whip</span><span class="word-pill">white</span><span class="word-pill">wheat</span><span class="word-pill">wheel</span><span class="word-pill">whale</span><span class="word-pill">whether</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">ph</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">phone</span><span class="word-pill">photo</span><span class="word-pill">phrase</span><span class="word-pill">graph</span><span class="word-pill">phobia</span><span class="word-pill">phase</span><span class="word-pill">phantom</span><span class="word-pill">phoenix</span><span class="word-pill">pharmacy</span><span class="word-pill">philosophy</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">ck</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">back</span><span class="word-pill">black</span><span class="word-pill">block</span><span class="word-pill">brick</span><span class="word-pill">check</span><span class="word-pill">click</span><span class="word-pill">clock</span><span class="word-pill">cluck</span><span class="word-pill">deck</span><span class="word-pill">duck</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">ng</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">bang</span><span class="word-pill">bring</span><span class="word-pill">king</span><span class="word-pill">long</span><span class="word-pill">ring</span><span class="word-pill">sing</span><span class="word-pill">song</span><span class="word-pill">spring</span><span class="word-pill">strong</span><span class="word-pill">thing</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">gh</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">laugh</span><span class="word-pill">rough</span><span class="word-pill">tough</span><span class="word-pill">enough</span><span class="word-pill">cough</span><span class="word-pill">through</span><span class="word-pill">though</span><span class="word-pill">night</span><span class="word-pill">light</span><span class="word-pill">might</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">kn</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">knack</span><span class="word-pill">knee</span><span class="word-pill">knew</span><span class="word-pill">knife</span><span class="word-pill">knight</span><span class="word-pill">knob</span><span class="word-pill">knock</span><span class="word-pill">knot</span><span class="word-pill">know</span><span class="word-pill">kneel</span></div></div></div></div><div class="section s4" id="s4">
-      <div class="section-header">
-        <span class="section-number">04</span>
-        <span class="section-title">Magic E</span>
-        <span class="section-desc">Silent E makes the vowel say its name</span>
-      </div>
-      <div class="prog-wrap">
-        <div class="prog-label">
-          <span>Progress</span>
-          <span id="proglbl-4">0 / 50 learned</span>
-        </div>
-        <div class="prog-track"><div class="prog-fill" id="prog-4" style="width:0.0%"></div></div>
-      </div>
-    <div class="group-grid"><div class="group-widget"><div class="group-header"><span class="group-label">a_e (long A)</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">cake</span><span class="word-pill">cave</span><span class="word-pill">came</span><span class="word-pill">date</span><span class="word-pill">fame</span><span class="word-pill">gate</span><span class="word-pill">lake</span><span class="word-pill">late</span><span class="word-pill">make</span><span class="word-pill">name</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">i_e (long I)</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">bike</span><span class="word-pill">bite</span><span class="word-pill">dine</span><span class="word-pill">fine</span><span class="word-pill">kite</span><span class="word-pill">like</span><span class="word-pill">lime</span><span class="word-pill">line</span><span class="word-pill">mine</span><span class="word-pill">pine</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">o_e (long O)</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">bone</span><span class="word-pill">code</span><span class="word-pill">cone</span><span class="word-pill">dome</span><span class="word-pill">home</span><span class="word-pill">hope</span><span class="word-pill">hole</span><span class="word-pill">joke</span><span class="word-pill">mole</span><span class="word-pill">note</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">u_e (long U)</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">cube</span><span class="word-pill">cute</span><span class="word-pill">dune</span><span class="word-pill">fume</span><span class="word-pill">fuse</span><span class="word-pill">June</span><span class="word-pill">mule</span><span class="word-pill">pure</span><span class="word-pill">rule</span><span class="word-pill">tune</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">e_e (long E)</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">eve</span><span class="word-pill">these</span><span class="word-pill">theme</span><span class="word-pill">here</span><span class="word-pill">Pete</span><span class="word-pill">gene</span><span class="word-pill">scene</span><span class="word-pill">Steve</span><span class="word-pill">complete</span><span class="word-pill">extreme</span></div></div></div></div><div class="section s5" id="s5">
-      <div class="section-header">
-        <span class="section-number">05</span>
-        <span class="section-title">Vowel Teams</span>
-        <span class="section-desc">Two vowels that work together</span>
-      </div>
-      <div class="prog-wrap">
-        <div class="prog-label">
-          <span>Progress</span>
-          <span id="proglbl-5">0 / 120 learned</span>
-        </div>
-        <div class="prog-track"><div class="prog-fill" id="prog-5" style="width:0.0%"></div></div>
-      </div>
-    <div class="group-grid"><div class="group-widget"><div class="group-header"><span class="group-label">ai (long A)</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">rain</span><span class="word-pill">tail</span><span class="word-pill">mail</span><span class="word-pill">pail</span><span class="word-pill">sail</span><span class="word-pill">main</span><span class="word-pill">pain</span><span class="word-pill">rail</span><span class="word-pill">snail</span><span class="word-pill">trail</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">ay (long A)</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">day</span><span class="word-pill">hay</span><span class="word-pill">may</span><span class="word-pill">pay</span><span class="word-pill">play</span><span class="word-pill">pray</span><span class="word-pill">ray</span><span class="word-pill">say</span><span class="word-pill">stay</span><span class="word-pill">way</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">ee (long E)</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">bee</span><span class="word-pill">feel</span><span class="word-pill">feet</span><span class="word-pill">free</span><span class="word-pill">green</span><span class="word-pill">keep</span><span class="word-pill">meet</span><span class="word-pill">peel</span><span class="word-pill">seed</span><span class="word-pill">tree</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">ea (long E)</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">beach</span><span class="word-pill">bean</span><span class="word-pill">each</span><span class="word-pill">eat</span><span class="word-pill">heat</span><span class="word-pill">leaf</span><span class="word-pill">meal</span><span class="word-pill">read</span><span class="word-pill">seat</span><span class="word-pill">team</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">ie (long E/I)</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">chief</span><span class="word-pill">field</span><span class="word-pill">grief</span><span class="word-pill">piece</span><span class="word-pill">shield</span><span class="word-pill">thief</span><span class="word-pill">yield</span><span class="word-pill">die</span><span class="word-pill">lie</span><span class="word-pill">pie</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">oa (long O)</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">boat</span><span class="word-pill">cloak</span><span class="word-pill">coat</span><span class="word-pill">foam</span><span class="word-pill">goal</span><span class="word-pill">groan</span><span class="word-pill">load</span><span class="word-pill">moan</span><span class="word-pill">road</span><span class="word-pill">toad</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">oe (long O)</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">doe</span><span class="word-pill">foe</span><span class="word-pill">goes</span><span class="word-pill">hoe</span><span class="word-pill">joe</span><span class="word-pill">oboe</span><span class="word-pill">poem</span><span class="word-pill">poet</span><span class="word-pill">roe</span><span class="word-pill">toe</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">oo (long)</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">bloom</span><span class="word-pill">broom</span><span class="word-pill">cool</span><span class="word-pill">food</span><span class="word-pill">moon</span><span class="word-pill">pool</span><span class="word-pill">root</span><span class="word-pill">school</span><span class="word-pill">tool</span><span class="word-pill">zoo</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">oo (short)</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">book</span><span class="word-pill">brook</span><span class="word-pill">cook</span><span class="word-pill">foot</span><span class="word-pill">good</span><span class="word-pill">hook</span><span class="word-pill">look</span><span class="word-pill">rook</span><span class="word-pill">shook</span><span class="word-pill">wood</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">ue (long U)</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">blue</span><span class="word-pill">clue</span><span class="word-pill">due</span><span class="word-pill">glue</span><span class="word-pill">sue</span><span class="word-pill">true</span><span class="word-pill">argue</span><span class="word-pill">tissue</span><span class="word-pill">value</span><span class="word-pill">venue</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">ui (long U)</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">bruise</span><span class="word-pill">cruise</span><span class="word-pill">fruit</span><span class="word-pill">juice</span><span class="word-pill">ruin</span><span class="word-pill">suit</span><span class="word-pill">suit</span><span class="word-pill">sluice</span><span class="word-pill">nuisance</span><span class="word-pill">pursuit</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">eu/ew (long U)</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">blew</span><span class="word-pill">brew</span><span class="word-pill">chew</span><span class="word-pill">crew</span><span class="word-pill">dew</span><span class="word-pill">drew</span><span class="word-pill">flew</span><span class="word-pill">grew</span><span class="word-pill">new</span><span class="word-pill">stew</span></div></div></div></div><div class="section s6" id="s6">
-      <div class="section-header">
-        <span class="section-number">06</span>
-        <span class="section-title">Bossy R</span>
-        <span class="section-desc">R changes the vowel sound before it</span>
-      </div>
-      <div class="prog-wrap">
-        <div class="prog-label">
-          <span>Progress</span>
-          <span id="proglbl-6">0 / 100 learned</span>
-        </div>
-        <div class="prog-track"><div class="prog-fill" id="prog-6" style="width:0.0%"></div></div>
-      </div>
-    <div class="group-grid"><div class="group-widget"><div class="group-header"><span class="group-label">ar</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">arm</span><span class="word-pill">barn</span><span class="word-pill">car</span><span class="word-pill">dark</span><span class="word-pill">farm</span><span class="word-pill">hard</span><span class="word-pill">jar</span><span class="word-pill">park</span><span class="word-pill">star</span><span class="word-pill">yard</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">er</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">fern</span><span class="word-pill">germ</span><span class="word-pill">her</span><span class="word-pill">herd</span><span class="word-pill">merge</span><span class="word-pill">nerve</span><span class="word-pill">perch</span><span class="word-pill">stern</span><span class="word-pill">term</span><span class="word-pill">verb</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">ir</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">bird</span><span class="word-pill">dirt</span><span class="word-pill">firm</span><span class="word-pill">first</span><span class="word-pill">girl</span><span class="word-pill">shirt</span><span class="word-pill">sir</span><span class="word-pill">skirt</span><span class="word-pill">stir</span><span class="word-pill">third</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">or</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">born</span><span class="word-pill">cord</span><span class="word-pill">corn</span><span class="word-pill">fork</span><span class="word-pill">form</span><span class="word-pill">horn</span><span class="word-pill">more</span><span class="word-pill">port</span><span class="word-pill">shore</span><span class="word-pill">storm</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">ur</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">blur</span><span class="word-pill">burn</span><span class="word-pill">burst</span><span class="word-pill">curl</span><span class="word-pill">fur</span><span class="word-pill">hurt</span><span class="word-pill">purr</span><span class="word-pill">surf</span><span class="word-pill">turn</span><span class="word-pill">urge</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">ear</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">bear</span><span class="word-pill">clear</span><span class="word-pill">dear</span><span class="word-pill">ear</span><span class="word-pill">fear</span><span class="word-pill">gear</span><span class="word-pill">hear</span><span class="word-pill">near</span><span class="word-pill">tear</span><span class="word-pill">year</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">air</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">air</span><span class="word-pill">chair</span><span class="word-pill">fair</span><span class="word-pill">flair</span><span class="word-pill">hair</span><span class="word-pill">lair</span><span class="word-pill">pair</span><span class="word-pill">repair</span><span class="word-pill">stair</span><span class="word-pill">their</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">are</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">bare</span><span class="word-pill">care</span><span class="word-pill">dare</span><span class="word-pill">fare</span><span class="word-pill">flare</span><span class="word-pill">glare</span><span class="word-pill">hare</span><span class="word-pill">rare</span><span class="word-pill">share</span><span class="word-pill">spare</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">ore</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">bore</span><span class="word-pill">core</span><span class="word-pill">gore</span><span class="word-pill">more</span><span class="word-pill">pore</span><span class="word-pill">score</span><span class="word-pill">snore</span><span class="word-pill">sore</span><span class="word-pill">store</span><span class="word-pill">wore</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">ure</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">cure</span><span class="word-pill">lure</span><span class="word-pill">pure</span><span class="word-pill">sure</span><span class="word-pill">allure</span><span class="word-pill">endure</span><span class="word-pill">figure</span><span class="word-pill">mature</span><span class="word-pill">nature</span><span class="word-pill">ture</span></div></div></div></div><div class="section s7" id="s7">
-      <div class="section-header">
-        <span class="section-number">07</span>
-        <span class="section-title">Diphthongs</span>
-        <span class="section-desc">Gliding vowel sounds within one syllable</span>
-      </div>
-      <div class="prog-wrap">
-        <div class="prog-label">
-          <span>Progress</span>
-          <span id="proglbl-7">0 / 80 learned</span>
-        </div>
-        <div class="prog-track"><div class="prog-fill" id="prog-7" style="width:0.0%"></div></div>
-      </div>
-    <div class="group-grid"><div class="group-widget"><div class="group-header"><span class="group-label">oi</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">boil</span><span class="word-pill">broil</span><span class="word-pill">coil</span><span class="word-pill">coin</span><span class="word-pill">foil</span><span class="word-pill">join</span><span class="word-pill">moist</span><span class="word-pill">oil</span><span class="word-pill">point</span><span class="word-pill">soil</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">oy</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">boy</span><span class="word-pill">cloy</span><span class="word-pill">coy</span><span class="word-pill">destroy</span><span class="word-pill">enjoy</span><span class="word-pill">joy</span><span class="word-pill">loyal</span><span class="word-pill">ploy</span><span class="word-pill">royal</span><span class="word-pill">toy</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">ou</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">cloud</span><span class="word-pill">count</span><span class="word-pill">couch</span><span class="word-pill">found</span><span class="word-pill">loud</span><span class="word-pill">mouse</span><span class="word-pill">mouth</span><span class="word-pill">out</span><span class="word-pill">round</span><span class="word-pill">sound</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">ow (ow sound)</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">bow</span><span class="word-pill">brow</span><span class="word-pill">clown</span><span class="word-pill">cow</span><span class="word-pill">crowd</span><span class="word-pill">down</span><span class="word-pill">frown</span><span class="word-pill">gown</span><span class="word-pill">how</span><span class="word-pill">now</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">ow (long O)</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">blow</span><span class="word-pill">flow</span><span class="word-pill">glow</span><span class="word-pill">grow</span><span class="word-pill">know</span><span class="word-pill">low</span><span class="word-pill">row</span><span class="word-pill">show</span><span class="word-pill">slow</span><span class="word-pill">snow</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">ew</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">blew</span><span class="word-pill">brew</span><span class="word-pill">chew</span><span class="word-pill">crew</span><span class="word-pill">dew</span><span class="word-pill">flew</span><span class="word-pill">grew</span><span class="word-pill">new</span><span class="word-pill">stew</span><span class="word-pill">threw</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">au</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">applaud</span><span class="word-pill">August</span><span class="word-pill">auto</span><span class="word-pill">cause</span><span class="word-pill">clause</span><span class="word-pill">fault</span><span class="word-pill">haul</span><span class="word-pill">launch</span><span class="word-pill">pause</span><span class="word-pill">sauce</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">aw</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">claw</span><span class="word-pill">crawl</span><span class="word-pill">dawn</span><span class="word-pill">draw</span><span class="word-pill">fawn</span><span class="word-pill">jaw</span><span class="word-pill">law</span><span class="word-pill">paw</span><span class="word-pill">raw</span><span class="word-pill">saw</span></div></div></div></div><div class="section s8" id="s8">
-      <div class="section-header">
-        <span class="section-number">08</span>
-        <span class="section-title">Silent Letters</span>
-        <span class="section-desc">Letters you write but don't say</span>
-      </div>
-      <div class="prog-wrap">
-        <div class="prog-label">
-          <span>Progress</span>
-          <span id="proglbl-8">0 / 130 learned</span>
-        </div>
-        <div class="prog-track"><div class="prog-fill" id="prog-8" style="width:0.0%"></div></div>
-      </div>
-    <div class="group-grid"><div class="group-widget"><div class="group-header"><span class="group-label">silent b</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">bomb</span><span class="word-pill">climb</span><span class="word-pill">comb</span><span class="word-pill">crumb</span><span class="word-pill">debt</span><span class="word-pill">doubt</span><span class="word-pill">dumb</span><span class="word-pill">lamb</span><span class="word-pill">limb</span><span class="word-pill">thumb</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">silent c</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">acquire</span><span class="word-pill">black</span><span class="word-pill">muscle</span><span class="word-pill">obscene</span><span class="word-pill">scissors</span><span class="word-pill">scene</span><span class="word-pill">scent</span><span class="word-pill">scenic</span><span class="word-pill">science</span><span class="word-pill">sceptic</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">silent d</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">adjust</span><span class="word-pill">edge</span><span class="word-pill">handsome</span><span class="word-pill">hedge</span><span class="word-pill">judge</span><span class="word-pill">ledge</span><span class="word-pill">lodge</span><span class="word-pill">sandwich</span><span class="word-pill">sledge</span><span class="word-pill">Wednesday</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">silent e</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">bake</span><span class="word-pill">blue</span><span class="word-pill">come</span><span class="word-pill">give</span><span class="word-pill">have</span><span class="word-pill">home</span><span class="word-pill">live</span><span class="word-pill">love</span><span class="word-pill">some</span><span class="word-pill">time</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">silent g</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">align</span><span class="word-pill">campaign</span><span class="word-pill">design</span><span class="word-pill">foreign</span><span class="word-pill">gnash</span><span class="word-pill">gnarl</span><span class="word-pill">gnome</span><span class="word-pill">gnu</span><span class="word-pill">resign</span><span class="word-pill">sign</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">silent gh</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">bright</span><span class="word-pill">daughter</span><span class="word-pill">fight</span><span class="word-pill">flight</span><span class="word-pill">fright</span><span class="word-pill">light</span><span class="word-pill">might</span><span class="word-pill">night</span><span class="word-pill">right</span><span class="word-pill">tight</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">silent h</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">ghost</span><span class="word-pill">heir</span><span class="word-pill">honest</span><span class="word-pill">honor</span><span class="word-pill">hour</span><span class="word-pill">rhyme</span><span class="word-pill">rhythm</span><span class="word-pill">vehicle</span><span class="word-pill">what</span><span class="word-pill">white</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">silent k</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">knack</span><span class="word-pill">knee</span><span class="word-pill">kneel</span><span class="word-pill">knew</span><span class="word-pill">knife</span><span class="word-pill">knight</span><span class="word-pill">knit</span><span class="word-pill">knob</span><span class="word-pill">knock</span><span class="word-pill">know</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">silent l</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">calm</span><span class="word-pill">calf</span><span class="word-pill">chalk</span><span class="word-pill">could</span><span class="word-pill">folk</span><span class="word-pill">half</span><span class="word-pill">palm</span><span class="word-pill">psalm</span><span class="word-pill">talk</span><span class="word-pill">walk</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">silent n</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">autumn</span><span class="word-pill">column</span><span class="word-pill">condemn</span><span class="word-pill">damn</span><span class="word-pill">hymn</span><span class="word-pill">solemn</span><span class="word-pill">government</span><span class="word-pill">environment</span><span class="word-pill">damn</span><span class="word-pill">contemn</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">silent p</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">pneumonia</span><span class="word-pill">psalm</span><span class="word-pill">psyche</span><span class="word-pill">psychology</span><span class="word-pill">pterodactyl</span><span class="word-pill">receipt</span><span class="word-pill">corps</span><span class="word-pill">pneumatic</span><span class="word-pill">raspberry</span><span class="word-pill">cupboard</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">silent t</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">ballet</span><span class="word-pill">buffet</span><span class="word-pill">castle</span><span class="word-pill">Christmas</span><span class="word-pill">fasten</span><span class="word-pill">glisten</span><span class="word-pill">hustle</span><span class="word-pill">listen</span><span class="word-pill">often</span><span class="word-pill">whistle</span></div></div><div class="group-widget"><div class="group-header"><span class="group-label">silent w</span><span class="group-count">10</span></div><div class="word-wrap"><span class="word-pill">answer</span><span class="word-pill">awry</span><span class="word-pill">playwright</span><span class="word-pill">sword</span><span class="word-pill">two</span><span class="word-pill">who</span><span class="word-pill">whole</span><span class="word-pill">wrap</span><span class="word-pill">wren</span><span class="word-pill">write</span></div></div></div></div></div>
+  <footer>Phonics word lists for early readers • Progress saved locally</footer>
 
-<footer>Phonics word lists for early readers • Progress saved locally</footer>
-
-<script>
+  <script>
 const DATA = [
   {
     id: 1, cls: 's1', anchor: 's1',
@@ -545,33 +540,89 @@ const DATA = [
   }
 ];
 
-let learned = JSON.parse(localStorage.getItem('phonics_learned2') || '{}');
 
-function save() { localStorage.setItem('phonics_learned2', JSON.stringify(learned)); }
-
-function toggleWord(word, pill) {
-  learned[word] = !learned[word];
-  pill.classList.toggle('learned', !!learned[word]);
-  save();
-  updateSectionProgress();
+let learned = {};
+try {
+  learned = JSON.parse(localStorage.getItem('phonics_learned2') || '{}');
+  if (!learned || typeof learned !== 'object') learned = {};
+} catch {
+  learned = {};
 }
 
-function updateSectionProgress() {
-  DATA.forEach(section => {
-    const allWords = section.groups.flatMap(g => g.words);
-    const done = allWords.filter(w => learned[w]).length;
-    const el = document.getElementById('prog-' + section.id);
-    const lbl = document.getElementById('proglbl-' + section.id);
-    if (el) el.style.width = (done / allWords.length * 100).toFixed(1) + '%';
-    if (lbl) lbl.textContent = done + ' / ' + allWords.length + ' learned';
+function save() {
+  try {
+    localStorage.setItem('phonics_learned2', JSON.stringify(learned));
+  } catch (err) {
+    console.warn('Could not save progress:', err);
+  }
+}
+
+function wordKey(sectionId, groupLabel, word) {
+  return `${sectionId}::${groupLabel}::${word}`;
+}
+
+function isLearned(sectionId, groupLabel, word) {
+  return !!learned[wordKey(sectionId, groupLabel, word)];
+}
+
+function toggleWord(sectionId, groupLabel, word, element) {
+  const key = wordKey(sectionId, groupLabel, word);
+  learned[key] = !learned[key];
+
+  element.classList.toggle('learned', learned[key]);
+  element.setAttribute('aria-pressed', String(!!learned[key]));
+
+  save();
+  updateSectionProgress(sectionId);
+}
+
+function updateSectionProgress(sectionId) {
+  const section = DATA.find(item => item.id === sectionId);
+  if (!section) return;
+
+  const allWords = section.groups.flatMap(group => group.words);
+  const done = section.groups.reduce((count, group) => {
+    return count + group.words.filter(word => isLearned(section.id, group.label, word)).length;
+  }, 0);
+
+  const fill = document.getElementById(`prog-${section.id}`);
+  const label = document.getElementById(`proglbl-${section.id}`);
+
+  if (fill) {
+    fill.style.width = allWords.length ? `${(done / allWords.length * 100).toFixed(1)}%` : '0%';
+  }
+
+  if (label) {
+    label.textContent = `${done} / ${allWords.length} learned`;
+  }
+}
+
+function updateAllProgress() {
+  DATA.forEach(section => updateSectionProgress(section.id));
+}
+
+function makeInteractive(element, sectionId, groupLabel, word) {
+  element.setAttribute('role', 'button');
+  element.setAttribute('tabindex', '0');
+  element.setAttribute('aria-pressed', String(isLearned(sectionId, groupLabel, word)));
+
+  const activate = () => toggleWord(sectionId, groupLabel, word, element);
+
+  element.addEventListener('click', activate);
+  element.addEventListener('keydown', event => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      activate();
+    }
   });
 }
 
 function buildCVC(section) {
   const container = document.createElement('div');
+
   section.groups.forEach(group => {
     const title = document.createElement('p');
-    title.style.cssText = 'font-size:13px;font-weight:600;color:var(--muted);margin:0 0 8px;text-transform:uppercase;letter-spacing:0.05em;';
+    title.className = 'subgroup-title';
     title.textContent = group.label;
     container.appendChild(title);
 
@@ -581,14 +632,23 @@ function buildCVC(section) {
 
     group.words.forEach(word => {
       const card = document.createElement('div');
-      card.className = 'cvc-card' + (learned[word] ? ' learned' : '');
-      card.innerHTML = word + '<span class="vowel-tag">' + word[1] + '</span>';
-      card.onclick = () => toggleWord(word, card);
+      card.className = 'cvc-card' + (isLearned(section.id, group.label, word) ? ' learned' : '');
+
+      const wordText = document.createElement('span');
+      wordText.textContent = word;
+
+      const vowel = document.createElement('span');
+      vowel.className = 'vowel-tag';
+      vowel.textContent = word.length > 1 ? word[1] : '';
+
+      card.append(wordText, vowel);
+      makeInteractive(card, section.id, group.label, word);
       grid.appendChild(card);
     });
 
     container.appendChild(grid);
   });
+
   return container;
 }
 
@@ -602,7 +662,16 @@ function buildGroups(section) {
 
     const header = document.createElement('div');
     header.className = 'group-header';
-    header.innerHTML = `<span class="group-label">${group.label}</span><span class="group-count">${group.words.length}</span>`;
+
+    const label = document.createElement('span');
+    label.className = 'group-label';
+    label.textContent = group.label;
+
+    const count = document.createElement('span');
+    count.className = 'group-count';
+    count.textContent = group.words.length;
+
+    header.append(label, count);
     widget.appendChild(header);
 
     const wordWrap = document.createElement('div');
@@ -610,9 +679,9 @@ function buildGroups(section) {
 
     group.words.forEach(word => {
       const pill = document.createElement('span');
-      pill.className = 'word-pill' + (learned[word] ? ' learned' : '');
+      pill.className = 'word-pill' + (isLearned(section.id, group.label, word) ? ' learned' : '');
       pill.textContent = word;
-      pill.onclick = () => toggleWord(word, pill);
+      makeInteractive(pill, section.id, group.label, word);
       wordWrap.appendChild(pill);
     });
 
@@ -625,39 +694,95 @@ function buildGroups(section) {
 
 function render() {
   const app = document.getElementById('app');
+  app.replaceChildren();
 
   DATA.forEach(section => {
-    const allWords = section.groups.flatMap(g => g.words);
-    const done = allWords.filter(w => learned[w]).length;
+    const allWords = section.groups.flatMap(group => group.words);
 
-    const sec = document.createElement('div');
-    sec.className = 'section ' + section.cls;
+    const sec = document.createElement('section');
+    sec.className = `section ${section.cls}`;
     sec.id = section.anchor;
+    sec.setAttribute('aria-labelledby', `title-${section.id}`);
 
-    // header
-    sec.innerHTML = `
-      <div class="section-header">
-        <span class="section-number">0${section.id}</span>
-        <span class="section-title">${section.title}</span>
-        <span class="section-desc">${section.desc}</span>
-      </div>
-      <div class="prog-wrap">
-        <div class="prog-label">
-          <span>Progress</span>
-          <span id="proglbl-${section.id}">${done} / ${allWords.length} learned</span>
-        </div>
-        <div class="prog-track"><div class="prog-fill" id="prog-${section.id}" style="width:${(done/allWords.length*100).toFixed(1)}%"></div></div>
-      </div>
-    `;
+    const header = document.createElement('div');
+    header.className = 'section-header';
 
-    const content = section.type === 'cvc' ? buildCVC(section) : buildGroups(section);
+    const number = document.createElement('span');
+    number.className = 'section-number';
+    number.textContent = String(section.id).padStart(2, '0');
+
+    const title = document.createElement('h2');
+    title.className = 'section-title';
+    title.id = `title-${section.id}`;
+    title.textContent = section.title;
+
+    const desc = document.createElement('span');
+    desc.className = 'section-desc';
+    desc.textContent = section.desc;
+
+    header.append(number, title, desc);
+    sec.appendChild(header);
+
+    const progress = document.createElement('div');
+    progress.className = 'prog-wrap';
+
+    const progressLabel = document.createElement('div');
+    progressLabel.className = 'prog-label';
+
+    const progressText = document.createElement('span');
+    progressText.textContent = 'Progress';
+
+    const progressCount = document.createElement('span');
+    progressCount.id = `proglbl-${section.id}`;
+
+    progressLabel.append(progressText, progressCount);
+
+    const track = document.createElement('div');
+    track.className = 'prog-track';
+    track.setAttribute('role', 'progressbar');
+    track.setAttribute('aria-label', `${section.title} progress`);
+    track.setAttribute('aria-valuemin', '0');
+    track.setAttribute('aria-valuemax', String(allWords.length));
+
+    const fill = document.createElement('div');
+    fill.className = 'prog-fill';
+    fill.id = `prog-${section.id}`;
+
+    track.appendChild(fill);
+    progress.append(progressLabel, track);
+    sec.appendChild(progress);
+
+    const content = section.type === 'cvc'
+      ? buildCVC(section)
+      : buildGroups(section);
+
     sec.appendChild(content);
     app.appendChild(sec);
   });
+
+  updateAllProgress();
 }
 
-render();
-</script>
+function resetProgress() {
+  if (!confirm('Reset all phonics progress? This cannot be undone.')) return;
+  learned = {};
+  save();
 
+  document.querySelectorAll('.learned').forEach(element => {
+    element.classList.remove('learned');
+    element.setAttribute('aria-pressed', 'false');
+  });
 
-</body></html>
+  updateAllProgress();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  render();
+
+  const resetButton = document.getElementById('reset-progress');
+  resetButton.addEventListener('click', resetProgress);
+});
+
+  </script>
+</body>
+</html>
