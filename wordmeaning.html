@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word Explorer — Dictionary</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fredoka:wght@500;600;700&display=swap');
+
+:root{
+  --bg:#fff8ef;
+  --surface:#ffffff;
+  --ink:#241b15;
+  --muted:#776b60;
+  --line:#eadfd3;
+  --accent:#ff7a45;
+  --accent2:#7c5cff;
+  --good:#22a06b;
+  --danger:#d94a4a;
+  --shadow:0 12px 30px rgba(57,39,25,.08);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:"DM Sans",sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 5% 0,#ffd76a33,transparent 25rem),
+    radial-gradient(circle at 100% 10%,#7c5cff20,transparent 28rem),
+    var(--bg);
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.app{max-width:1100px;margin:auto;padding:18px 16px 50px}
+
+/* Hero */
+.hero{
+  padding:28px;
+  border:1px solid var(--line);
+  border-radius:28px;
+  background:linear-gradient(135deg,#ffeadb,#fff 50%,#eee9ff);
+  box-shadow:var(--shadow);
+  position:relative;
+  overflow:hidden;
+}
+.hero:after{
+  content:"📖 ✦ 🔊";
+  position:absolute;
+  right:24px;
+  top:20px;
+  font-size:25px;
+  opacity:.18;
+}
+.kicker{
+  color:var(--accent);
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+h1{
+  font:700 clamp(2.4rem,7vw,4.4rem)/.95 Fredoka;
+  margin:7px 0 10px;
+}
+.hero p{max-width:700px;color:var(--muted);margin:0}
+.search-row{display:flex;gap:9px;margin-top:20px}
+.search{
+  flex:1;
+  min-width:0;
+  padding:13px 15px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  outline:none;
+  background:#fff;
+}
+.search:focus{border-color:var(--accent)}
+.btn{
+  border:0;
+  border-radius:13px;
+  padding:12px 16px;
+  font-weight:700;
+  background:var(--ink);
+  color:#fff;
+}
+.btn.primary{background:var(--accent)}
+.btn.light{
+  background:#fff;
+  color:var(--ink);
+  border:1px solid var(--line);
+}
+
+/* Search suggestions */
+.examples{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  margin-top:11px;
+  align-items:center;
+}
+.examples span{font-size:12px;color:var(--muted)}
+.example{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:99px;
+  padding:6px 10px;
+  color:var(--ink);
+  font-size:12px;
+  font-weight:700;
+}
+
+/* Status */
+.status{
+  min-height:25px;
+  margin:15px 2px 0;
+  font-size:13px;
+  color:var(--muted);
+}
+.status.error{color:var(--danger);font-weight:700}
+.status.loading{color:var(--accent2);font-weight:700}
+
+/* Word header */
+.word-card{
+  margin-top:16px;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:25px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.word-header{
+  padding:25px;
+  background:linear-gradient(135deg,#fff,#fff7ef);
+  border-bottom:1px solid var(--line);
+}
+.word-line{
+  display:flex;
+  align-items:flex-start;
+  gap:13px;
+  flex-wrap:wrap;
+}
+.word{
+  font:700 clamp(2.8rem,8vw,5rem)/.9 Fredoka;
+  margin:0;
+}
+.phonetic{
+  margin-top:12px;
+  font-size:18px;
+  color:var(--accent2);
+  font-weight:600;
+}
+.header-actions{margin-left:auto;display:flex;gap:7px;flex-wrap:wrap}
+.icon-btn{
+  width:44px;height:44px;
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:13px;
+  font-size:19px;
+}
+.origin{
+  margin:16px 0 0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.6;
+}
+.origin strong{color:var(--ink)}
+
+/* Audio */
+.audio-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.audio-btn{
+  border:1px solid var(--line);
+  background:#fff;
+  color:var(--ink);
+  border-radius:12px;
+  padding:8px 11px;
+  font-weight:700;
+}
+.audio-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* Meanings */
+.meanings{padding:22px 25px 28px}
+.meaning{
+  padding:18px 0;
+  border-bottom:1px solid var(--line);
+}
+.meaning:last-child{border-bottom:0}
+.part{
+  display:inline-flex;
+  align-items:center;
+  padding:6px 10px;
+  border-radius:99px;
+  background:#f0eaff;
+  color:#5b42b8;
+  font-size:12px;
+  font-weight:700;
+  text-transform:capitalize;
+  margin-bottom:12px;
+}
+.definition{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:10px;
+  margin:11px 0;
+}
+.def-number{
+  width:28px;height:28px;
+  display:grid;place-items:center;
+  border-radius:9px;
+  background:#fff0e8;
+  color:var(--accent);
+  font-weight:700;
+}
+.def-text{line-height:1.6}
+.example{
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.55;
+  margin:8px 0 0 38px;
+}
+.example:before{content:"“";font-size:22px;color:var(--accent)}
+.example:after{content:"”";font-size:22px;color:var(--accent)}
+.word-relations{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin:12px 0 0 38px;
+}
+.relation{
+  border:1px solid var(--line);
+  background:#faf7f2;
+  border-radius:99px;
+  padding:6px 10px;
+  font-size:12px;
+}
+.relation b{margin-right:4px}
+.syn{color:var(--good)}
+.ant{color:var(--danger)}
+
+/* Empty state */
+.empty{
+  margin-top:16px;
+  padding:45px 25px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:25px;
+  box-shadow:var(--shadow);
+  text-align:center;
+}
+.empty-icon{font-size:48px}
+.empty h2{font:700 30px Fredoka;margin:8px 0}
+.empty p{color:var(--muted);max-width:520px;margin:auto;line-height:1.6}
+
+/* Raw JSON */
+.raw{
+  margin-top:16px;
+  background:#241b15;
+  color:#eee;
+  border-radius:20px;
+  overflow:hidden;
+}
+.raw-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:11px 15px;
+  border-bottom:1px solid #ffffff18;
+}
+.raw-head strong{font-family:Fredoka}
+.raw pre{
+  margin:0;
+  padding:15px;
+  max-height:400px;
+  overflow:auto;
+  font:12px/1.55 Consolas,monospace;
+}
+
+/* Footer */
+footer{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+
+@media(max-width:650px){
+  .app{padding:10px 10px 35px}
+  .hero{padding:20px;border-radius:22px}
+  .search-row{flex-direction:column}
+  .search{width:100%}
+  .word-header,.meanings{padding:20px 17px}
+  .header-actions{width:100%;margin-left:0}
+  .definition{grid-template-columns:auto 1fr}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+  <section class="hero">
+    <div class="kicker">📚 Word Explorer</div>
+    <h1>Discover a Word.</h1>
+    <p>Search the dictionary, explore meanings, listen to pronunciation, and discover examples, synonyms and antonyms.</p>
+
+    <form class="search-row" id="searchForm">
+      <input
+        id="wordInput"
+        class="search"
+        type="search"
+        autocomplete="off"
+        placeholder="Enter a word… e.g. hello"
+        aria-label="Word to search"
+      >
+      <button class="btn primary" type="submit">Search 🔎</button>
+    </form>
+
+    <div class="examples">
+      <span>Try:</span>
+      <button class="example" data-word="hello">hello</button>
+      <button class="example" data-word="beautiful">beautiful</button>
+      <button class="example" data-word="adventure">adventure</button>
+      <button class="example" data-word="curious">curious</button>
+    </div>
+
+    <div id="status" class="status"></div>
+  </section>
+
+  <section id="result"></section>
+
+  <footer>
+    Powered by Dictionary API • Results are fetched live from the API.
+  </footer>
+</div>
+
+<script>
+const API_BASE = "https://api.dictionaryapi.dev/api/v2/entries/en/";
+
+const input = document.getElementById("wordInput");
+const form = document.getElementById("searchForm");
+const result = document.getElementById("result");
+const statusEl = document.getElementById("status");
+
+function escapeHTML(value){
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function setStatus(text="", type=""){
+  statusEl.textContent=text;
+  statusEl.className="status " + type;
+}
+
+function speak(text){
+  if(!("speechSynthesis" in window)){
+    setStatus("Speech playback is not supported by this browser.","error");
+    return;
+  }
+  speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.rate = .78;
+  utterance.pitch = 1.02;
+  speechSynthesis.speak(utterance);
+}
+
+function playAudio(url){
+  if(!url)return;
+  const audio = new Audio(url);
+  audio.play().catch(()=>{
+    window.open(url,"_blank","noopener");
+  });
+}
+
+function normalizeAudioUrl(url){
+  if(!url)return "";
+  if(url.startsWith("//")) return "https:" + url;
+  return url;
+}
+
+function collectPhonetics(entry){
+  const seen = new Set();
+  const list = [];
+
+  if(entry.phonetic){
+    seen.add(entry.phonetic);
+    list.push({text:entry.phonetic,audio:""});
+  }
+
+  for(const p of (entry.phonetics || [])){
+    const text = p.text || "";
+    const audio = normalizeAudioUrl(p.audio || "");
+    const key = text + "|" + audio;
+    if(!seen.has(key)){
+      seen.add(key);
+      list.push({text,audio});
+    }
+  }
+  return list;
+}
+
+function renderEntry(entry){
+  const phonetics = collectPhonetics(entry);
+
+  const audioButtons = phonetics
+    .filter(p=>p.audio)
+    .map((p,i)=>`
+      <button class="audio-btn" data-audio="${escapeHTML(p.audio)}">
+        🔊 ${escapeHTML(p.text || "Pronunciation "+(i+1))}
+      </button>
+    `).join("");
+
+  const phoneticText = entry.phonetic ||
+    phonetics.find(p=>p.text)?.text ||
+    "Pronunciation unavailable";
+
+  const meanings = (entry.meanings || []).map(meaning=>{
+    const defs = (meaning.definitions || []).map((d,i)=>{
+      const relations = [];
+
+      if((d.synonyms || []).length){
+        relations.push(`
+          <div class="relation syn">
+            <b>Synonyms:</b>${d.synonyms.map(escapeHTML).join(", ")}
+          </div>
+        `);
+      }
+
+      if((d.antonyms || []).length){
+        relations.push(`
+          <div class="relation ant">
+            <b>Antonyms:</b>${d.antonyms.map(escapeHTML).join(", ")}
+          </div>
+        `);
+      }
+
+      return `
+        <div class="definition">
+          <span class="def-number">${i+1}</span>
+          <div>
+            <div class="def-text">${escapeHTML(d.definition)}</div>
+            ${d.example ? `<div class="example">${escapeHTML(d.example)}</div>` : ""}
+            ${relations.length ? `<div class="word-relations">${relations.join("")}</div>` : ""}
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    return `
+      <article class="meaning">
+        <span class="part">${escapeHTML(meaning.partOfSpeech || "meaning")}</span>
+        ${defs}
+      </article>
+    `;
+  }).join("");
+
+  return `
+    <article class="word-card">
+      <header class="word-header">
+        <div class="word-line">
+          <div>
+            <h2 class="word">${escapeHTML(entry.word)}</h2>
+            <div class="phonetic">${escapeHTML(phoneticText)}</div>
+          </div>
+
+          <div class="header-actions">
+            <button class="icon-btn" id="speakBtn" title="Speak word" aria-label="Speak word">🗣️</button>
+            <button class="icon-btn" id="copyBtn" title="Copy word" aria-label="Copy word">📋</button>
+          </div>
+        </div>
+
+        ${entry.origin ? `
+          <p class="origin">
+            <strong>Origin:</strong> ${escapeHTML(entry.origin)}
+          </p>
+        ` : ""}
+
+        ${audioButtons ? `<div class="audio-list">${audioButtons}</div>` : ""}
+      </header>
+
+      <div class="meanings">
+        ${meanings || `<p style="color:var(--muted)">No definitions were supplied for this entry.</p>`}
+      </div>
+    </article>
+  `;
+}
+
+function renderRaw(data){
+  return `
+    <details class="raw">
+      <summary class="raw-head">
+        <strong>View API response</strong>
+        <span>JSON</span>
+      </summary>
+      <pre>${escapeHTML(JSON.stringify(data,null,2))}</pre>
+    </details>
+  `;
+}
+
+async function searchWord(word){
+  word = word.trim().toLowerCase();
+
+  if(!word){
+    setStatus("Enter a word to search.","error");
+    input.focus();
+    return;
+  }
+
+  // The API endpoint is intended for words; encode the path segment safely.
+  const url = API_BASE + encodeURIComponent(word);
+
+  setStatus("Looking up “" + word + "”…","loading");
+  result.innerHTML = "";
+
+  try{
+    const response = await fetch(url, {
+      headers:{ "Accept":"application/json" }
+    });
+
+    const data = await response.json();
+
+    if(!response.ok){
+      const message = data?.message || "That word could not be found.";
+      throw new Error(message);
+    }
+
+    const entries = Array.isArray(data) ? data : [data];
+
+    result.innerHTML = entries.map(renderEntry).join("") + renderRaw(data);
+
+    document.querySelectorAll("[data-audio]").forEach(btn=>{
+      btn.addEventListener("click",()=>playAudio(btn.dataset.audio));
+    });
+
+    document.getElementById("speakBtn")?.addEventListener("click",()=>{
+      speak(entries[0].word || word);
+    });
+
+    document.getElementById("copyBtn")?.addEventListener("click",async()=>{
+      try{
+        await navigator.clipboard.writeText(entries[0].word || word);
+        setStatus("Copied “" + (entries[0].word || word) + "” to the clipboard.","");
+      }catch{
+        setStatus("Could not access the clipboard.","error");
+      }
+    });
+
+    setStatus(`Found ${entries.length} dictionary ${entries.length === 1 ? "entry" : "entries"} for “${word}”.`);
+    document.querySelector(".word-card")?.scrollIntoView({behavior:"smooth",block:"start"});
+  }catch(error){
+    result.innerHTML = `
+      <section class="empty">
+        <div class="empty-icon">🔎</div>
+        <h2>Word not found</h2>
+        <p>
+          We couldn't find a dictionary entry for <strong>${escapeHTML(word)}</strong>.
+          Check the spelling and try another word.
+        </p>
+      </section>
+    `;
+    setStatus(error.message || "Something went wrong while looking up the word.","error");
+  }
+}
+
+form.addEventListener("submit",event=>{
+  event.preventDefault();
+  searchWord(input.value);
+});
+
+document.querySelectorAll("[data-word]").forEach(button=>{
+  button.addEventListener("click",()=>{
+    input.value = button.dataset.word;
+    searchWord(button.dataset.word);
+  });
+});
+
+// Load the example from the prompt when the page first opens.
+input.value = "hello";
+searchWord("hello");
+</script>
+</body>
+</html>
