@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Analog Clock</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            background: #eef2f7;
+            color: #1f2937;
+        }
+
+        .container {
+            width: min(95vw, 650px);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 32px;
+        }
+
+        /* =================================
+           CLOCK
+        ================================= */
+
+        .clock {
+            position: relative;
+
+            width: min(85vw, 500px);
+            aspect-ratio: 1;
+
+            margin: 0 auto 25px;
+
+            border-radius: 50%;
+
+            background: #ffffff;
+
+            border: 10px solid #1f2937;
+
+            box-shadow:
+                0 15px 35px rgba(0, 0, 0, 0.15),
+                inset 0 0 0 4px #d1d5db;
+
+            overflow: hidden;
+        }
+
+
+        /* =================================
+           CLOCK TICKS
+        ================================= */
+
+        .tick {
+            position: absolute;
+
+            left: 50%;
+            top: 50%;
+
+            width: 2px;
+            height: 10px;
+
+            background: #6b7280;
+
+            transform-origin: center bottom;
+
+            border-radius: 3px;
+
+            z-index: 1;
+        }
+
+        .tick.major {
+            width: 4px;
+            height: 17px;
+
+            background: #111827;
+        }
+
+
+        /* =================================
+           HOUR NUMBERS
+        ================================= */
+
+        .hour-number {
+            position: absolute;
+
+            left: 50%;
+            top: 50%;
+
+            transform:
+                translate(-50%, -50%);
+
+            font-size: clamp(24px, 5vw, 34px);
+
+            font-weight: bold;
+
+            color: #111827;
+
+            user-select: none;
+
+            z-index: 2;
+        }
+
+
+        /* =================================
+           MINUTE NUMBERS
+        ================================= */
+
+        .minute-number {
+            position: absolute;
+
+            left: 50%;
+            top: 50%;
+
+            transform:
+                translate(-50%, -50%);
+
+            font-size: clamp(10px, 2vw, 14px);
+
+            font-weight: 600;
+
+            color: #6b7280;
+
+            user-select: none;
+
+            z-index: 2;
+        }
+
+
+        /* =================================
+           CLOCK HANDS
+        ================================= */
+
+        .hand {
+            position: absolute;
+
+            left: 50%;
+            bottom: 50%;
+
+            transform-origin: 50% 100%;
+
+            transform:
+                translateX(-50%)
+                rotate(0deg);
+
+            border-radius: 10px;
+        }
+
+        .hour-hand {
+            width: 10px;
+            height: 27%;
+
+            background: #111827;
+
+            z-index: 5;
+        }
+
+        .minute-hand {
+            width: 7px;
+            height: 37%;
+
+            background: #374151;
+
+            z-index: 6;
+        }
+
+        .second-hand {
+            width: 2px;
+            height: 41%;
+
+            background: #dc2626;
+
+            z-index: 7;
+        }
+
+
+        /* =================================
+           CENTER PIN
+        ================================= */
+
+        .center-pin {
+            position: absolute;
+
+            width: 18px;
+            height: 18px;
+
+            left: 50%;
+            top: 50%;
+
+            transform:
+                translate(-50%, -50%);
+
+            background: #dc2626;
+
+            border: 4px solid white;
+
+            border-radius: 50%;
+
+            z-index: 10;
+
+            box-shadow:
+                0 0 0 2px #dc2626;
+        }
+
+
+        /* =================================
+           DIGITAL CLOCK
+        ================================= */
+
+        .digital {
+            display: inline-block;
+
+            margin-bottom: 20px;
+
+            padding: 10px 20px;
+
+            border-radius: 10px;
+
+            background: #111827;
+
+            color: white;
+
+            font-size: 25px;
+
+            font-family: "Courier New", monospace;
+
+            letter-spacing: 3px;
+        }
+
+
+        /* =================================
+           CONTROLS
+        ================================= */
+
+        .controls {
+            padding: 22px;
+
+            background: white;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .controls h2 {
+            margin: 0 0 18px;
+
+            font-size: 20px;
+        }
+
+        .inputs {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+        }
+
+        .input-group {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 6px;
+
+            text-align: left;
+        }
+
+        .input-group label {
+            font-size: 13px;
+
+            font-weight: bold;
+
+            color: #4b5563;
+        }
+
+        input {
+            width: 100px;
+
+            padding: 11px;
+
+            font-size: 18px;
+
+            text-align: center;
+
+            border: 2px solid #d1d5db;
+
+            border-radius: 8px;
+
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+        }
+
+        .buttons {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 10px;
+
+            margin-top: 18px;
+
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 11px 20px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .set-button {
+            background: #2563eb;
+
+            color: white;
+        }
+
+        .set-button:hover {
+            background: #1d4ed8;
+        }
+
+        .current-button {
+            background: #e5e7eb;
+
+            color: #111827;
+        }
+
+        .current-button:hover {
+            background: #d1d5db;
+        }
+
+        .error {
+            min-height: 20px;
+
+            margin-top: 10px;
+
+            color: #dc2626;
+
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Analog Clock</h1>
+
+
+    <!-- =========================
+         CLOCK
+    ========================== -->
+
+    <div class="clock" id="clock">
+
+        <!-- Hands -->
+
+        <div
+            class="hand hour-hand"
+            id="hourHand">
+        </div>
+
+        <div
+            class="hand minute-hand"
+            id="minuteHand">
+        </div>
+
+        <div
+            class="hand second-hand"
+            id="secondHand">
+        </div>
+
+
+        <!-- Center -->
+
+        <div class="center-pin"></div>
+
+    </div>
+
+
+    <!-- =========================
+         DIGITAL TIME
+    ========================== -->
+
+    <div
+        class="digital"
+        id="digitalTime">
+
+        12:00:00
+
+    </div>
+
+
+    <!-- =========================
+         CONTROLS
+    ========================== -->
+
+    <div class="controls">
+
+        <h2>Set Clock Time</h2>
+
+
+        <div class="inputs">
+
+            <div class="input-group">
+
+                <label for="hour">
+                    Hour
+                </label>
+
+                <input
+                    type="number"
+                    id="hour"
+                    min="0"
+                    max="23"
+                    value="12"
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label for="minute">
+                    Minute
+                </label>
+
+                <input
+                    type="number"
+                    id="minute"
+                    min="0"
+                    max="59"
+                    value="0"
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label for="second">
+                    Seconds
+                </label>
+
+                <input
+                    type="number"
+                    id="second"
+                    min="0"
+                    max="59"
+                    value="0"
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="buttons">
+
+            <button
+                class="set-button"
+                onclick="setManualTime()">
+
+                Set Time
+
+            </button>
+
+
+            <button
+                class="current-button"
+                onclick="useCurrentTime()">
+
+                Use Current Time
+
+            </button>
+
+        </div>
+
+
+        <div
+            class="error"
+            id="error">
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    const clock =
+        document.getElementById("clock");
+
+    const hourHand =
+        document.getElementById("hourHand");
+
+    const minuteHand =
+        document.getElementById("minuteHand");
+
+    const secondHand =
+        document.getElementById("secondHand");
+
+    const digitalTime =
+        document.getElementById("digitalTime");
+
+    const hourInput =
+        document.getElementById("hour");
+
+    const minuteInput =
+        document.getElementById("minute");
+
+    const secondInput =
+        document.getElementById("second");
+
+    const error =
+        document.getElementById("error");
+
+
+    /* =================================
+       CREATE TICKS
+    ================================= */
+
+    for (let i = 0; i < 60; i++) {
+
+        const tick =
+            document.createElement("div");
+
+        tick.classList.add("tick");
+
+        if (i % 5 === 0) {
+            tick.classList.add("major");
+        }
+
+
+        /*
+         * Each tick is placed at the center
+         * and then rotated around the center.
+         *
+         * The translate moves it upward from
+         * the center to the inside edge.
+         */
+
+        const angle = i * 6;
+
+
+        /*
+         * 42% keeps the ticks safely inside
+         * the clock circle.
+         */
+
+        const radius = 42;
+
+
+        const x =
+            Math.sin(angle * Math.PI / 180)
+            * radius;
+
+        const y =
+            -Math.cos(angle * Math.PI / 180)
+            * radius;
+
+
+        tick.style.left =
+            `calc(50% + ${x}%)`;
+
+        tick.style.top =
+            `calc(50% + ${y}%)`;
+
+
+        /*
+         * Rotate the tick so it points
+         * toward the center.
+         */
+
+        tick.style.transform =
+            `translate(-50%, -50%) rotate(${angle}deg)`;
+
+
+        clock.appendChild(tick);
+    }
+
+
+    /* =================================
+       CREATE HOUR NUMBERS
+    ================================= */
+
+    for (let i = 1; i <= 12; i++) {
+
+        const number =
+            document.createElement("div");
+
+        number.className =
+            "hour-number";
+
+        number.textContent = i;
+
+
+        const angle = i * 30;
+
+        const radius = 34;
+
+
+        const x =
+            Math.sin(angle * Math.PI / 180)
+            * radius;
+
+        const y =
+            -Math.cos(angle * Math.PI / 180)
+            * radius;
+
+
+        number.style.left =
+            `calc(50% + ${x}%)`;
+
+        number.style.top =
+            `calc(50% + ${y}%)`;
+
+
+        clock.appendChild(number);
+    }
+
+
+    /* =================================
+       CREATE MINUTE NUMBERS
+    ================================= */
+
+    for (let i = 5; i <= 60; i += 5) {
+
+        const number =
+            document.createElement("div");
+
+        number.className =
+            "minute-number";
+
+        number.textContent = i;
+
+
+        const angle = i * 6;
+
+        const radius = 40;
+
+
+        const x =
+            Math.sin(angle * Math.PI / 180)
+            * radius;
+
+        const y =
+            -Math.cos(angle * Math.PI / 180)
+            * radius;
+
+
+        number.style.left =
+            `calc(50% + ${x}%)`;
+
+        number.style.top =
+            `calc(50% + ${y}%)`;
+
+
+        clock.appendChild(number);
+    }
+
+
+    /* =================================
+       CLOCK STATE
+    ================================= */
+
+    let manualMode = false;
+
+    let manualHour = 12;
+    let manualMinute = 0;
+    let manualSecond = 0;
+
+    let manualStart = Date.now();
+
+
+    /* =================================
+       UPDATE CLOCK
+    ================================= */
+
+    function updateClock() {
+
+        let hours;
+        let minutes;
+        let seconds;
+
+
+        if (manualMode) {
+
+            const elapsed =
+                (Date.now() - manualStart) / 1000;
+
+
+            const totalSeconds =
+                manualHour * 3600 +
+                manualMinute * 60 +
+                manualSecond +
+                elapsed;
+
+
+            hours =
+                Math.floor(totalSeconds / 3600) % 24;
+
+            minutes =
+                Math.floor(totalSeconds / 60) % 60;
+
+            seconds =
+                totalSeconds % 60;
+
+        } else {
+
+            const now =
+                new Date();
+
+            hours =
+                now.getHours();
+
+            minutes =
+                now.getMinutes();
+
+            seconds =
+                now.getSeconds();
+
+        }
+
+
+        /* =================================
+           CALCULATE HAND ANGLES
+        ================================= */
+
+        const hour12 =
+            hours % 12;
+
+
+        const secondAngle =
+            seconds * 6;
+
+
+        const minuteAngle =
+            minutes * 6 +
+            seconds * 0.1;
+
+
+        const hourAngle =
+            hour12 * 30 +
+            minutes * 0.5 +
+            seconds * (0.5 / 60);
+
+
+        /* =================================
+           MOVE HANDS
+        ================================= */
+
+        hourHand.style.transform =
+            `translateX(-50%) rotate(${hourAngle}deg)`;
+
+
+        minuteHand.style.transform =
+            `translateX(-50%) rotate(${minuteAngle}deg)`;
+
+
+        secondHand.style.transform =
+            `translateX(-50%) rotate(${secondAngle}deg)`;
+
+
+        /* =================================
+           DIGITAL DISPLAY
+        ================================= */
+
+        const displayHour =
+            String(hours).padStart(2, "0");
+
+        const displayMinute =
+            String(minutes).padStart(2, "0");
+
+        const displaySecond =
+            String(Math.floor(seconds))
+            .padStart(2, "0");
+
+
+        digitalTime.textContent =
+            `${displayHour}:${displayMinute}:${displaySecond}`;
+
+
+        requestAnimationFrame(updateClock);
+    }
+
+
+    /* =================================
+       SET MANUAL TIME
+    ================================= */
+
+    function setManualTime() {
+
+        const h =
+            Number(hourInput.value);
+
+        const m =
+            Number(minuteInput.value);
+
+        const s =
+            Number(secondInput.value);
+
+
+        if (
+            !Number.isInteger(h) ||
+            h < 0 ||
+            h > 23
+        ) {
+
+            error.textContent =
+                "Hour must be between 0 and 23.";
+
+            return;
+        }
+
+
+        if (
+            !Number.isInteger(m) ||
+            m < 0 ||
+            m > 59
+        ) {
+
+            error.textContent =
+                "Minute must be between 0 and 59.";
+
+            return;
+        }
+
+
+        if (
+            !Number.isInteger(s) ||
+            s < 0 ||
+            s > 59
+        ) {
+
+            error.textContent =
+                "Seconds must be between 0 and 59.";
+
+            return;
+        }
+
+
+        manualHour = h;
+
+        manualMinute = m;
+
+        manualSecond = s;
+
+        manualStart = Date.now();
+
+        manualMode = true;
+
+        error.textContent = "";
+    }
+
+
+    /* =================================
+       USE CURRENT TIME
+    ================================= */
+
+    function useCurrentTime() {
+
+        manualMode = false;
+
+        const now =
+            new Date();
+
+
+        hourInput.value =
+            now.getHours();
+
+        minuteInput.value =
+            now.getMinutes();
+
+        secondInput.value =
+            now.getSeconds();
+
+
+        error.textContent = "";
+    }
+
+
+    /* =================================
+       START CLOCK
+    ================================= */
+
+    updateClock();
+
+</script>
+
+</body>
+</html>
