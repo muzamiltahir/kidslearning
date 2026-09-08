@@ -325,12 +325,13 @@ footer{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
   <section id="result"></section>
 
   <footer>
-    Powered by Dictionary API • Results are fetched live from the API.
+    Powered by Merriam-Webster Learner's Dictionary API • Results are fetched live from the API.
   </footer>
 </div>
 
 <script>
-const API_BASE = "https://api.dictionaryapi.dev/api/v2/entries/en/";
+const API_BASE = "https://www.dictionaryapi.com/api/v3/references/learners/json/";
+const API_KEY = "2817b288-3a48-4d16-8de0-54ad83f52af3";
 
 const input = document.getElementById("wordInput");
 const form = document.getElementById("searchForm");
@@ -377,104 +378,158 @@ function normalizeAudioUrl(url){
   return url;
 }
 
-function collectPhonetics(entry){
-  const seen = new Set();
-  const list = [];
-
-  if(entry.phonetic){
-    seen.add(entry.phonetic);
-    list.push({text:entry.phonetic,audio:""});
+function getText(value){
+  if(typeof value === "string") return value;
+  if(Array.isArray(value)) return value.map(getText).filter(Boolean).join(" ");
+  if(value && typeof value === "object"){
+    if(typeof value.dt === "string") return value.dt;
+    if(value.t) return getText(value.t);
+    if(value.text) return getText(value.text);
+    if(value.ld) return getText(value.ld);
+    if(value.vd) return getText(value.vd);
   }
-
-  for(const p of (entry.phonetics || [])){
-    const text = p.text || "";
-    const audio = normalizeAudioUrl(p.audio || "");
-    const key = text + "|" + audio;
-    if(!seen.has(key)){
-      seen.add(key);
-      list.push({text,audio});
-    }
-  }
-  return list;
+  return "";
 }
 
-function renderEntry(entry){
-  const phonetics = collectPhonetics(entry);
+function cleanText(value){
+  return getText(value)
+    .replace(/\{bc\}/g, ": ")
+    .replace(/\{it\}|\{\/it\}/g, "")
+    .replace(/\{b\}|\{\/b\}/g, "")
+    .replace(/\{ldquo\}|\{rdquo\}/g, '"')
+    .replace(/\{wi\}|\{\/wi\}/g, "")
+    .trim();
+}
 
-  const audioButtons = phonetics
-    .filter(p=>p.audio)
-    .map((p,i)=>`
-      <button class="audio-btn" data-audio="${escapeHTML(p.audio)}">
-        🔊 ${escapeHTML(p.text || "Pronunciation "+(i+1))}
+function getPronunciation(entry){
+  const prs = entry?.hwi?.prs || [];
+  for(const pr of prs){
+    const mw = pr?.mw;
+    if(mw) return cleanText(mw);
+    const ipa = pr?.ipa;
+    if(ipa) return cleanText(ipa);
+  }
+  return "";
+}
+
+function getAudioUrl(entry){
+  const prs = entry?.hwi?.prs || [];
+  const sound = prs.find(pr => pr?.sound?.audio)?.sound?.audio;
+  if(!sound) return "";
+
+  let subdir = sound.charAt(0);
+  if(subdir === "b" || subdir === "p" || subdir === "g"){
+    subdir = sound.slice(0,2);
+  }else if(sound.startsWith("number")){
+    subdir = "number";
+  }
+
+  return `https://media.merriam-webster.com/audio/prons/en/us/mp3/${subdir}/${sound}.mp3`;
+}
+
+function collectDefinitions(entry){
+  const definitions = [];
+
+  function walk(node, currentLabel=""){
+    if(!node) return;
+
+    if(Array.isArray(node)){
+      node.forEach(item => walk(item, currentLabel));
+      return;
+    }
+
+    if(typeof node !== "object") return;
+
+    const label = cleanText(node.fl || currentLabel);
+
+    if(Array.isArray(node.shortdef)){
+      node.shortdef.forEach(def => {
+        const text = cleanText(def);
+        if(text) definitions.push({
+          text,
+          label
+        });
+      });
+    }
+
+    if(Array.isArray(node.def)){
+      node.def.forEach(defBlock => {
+        const blockLabel = cleanText(defBlock.vd || defBlock.vr || label);
+        walk(defBlock.sseq, blockLabel);
+      });
+    }
+
+    if(Array.isArray(node.sseq)){
+      walk(node.sseq, label);
+    }
+  }
+
+  walk(entry);
+
+  // Fallback to the top-level short definitions.
+  if(!definitions.length && Array.isArray(entry.shortdef)){
+    entry.shortdef.forEach(def => {
+      const text = cleanText(def);
+      if(text) definitions.push({text, label: cleanText(entry.fl || "")});
+    });
+  }
+
+  return definitions;
+}
+
+function renderEntry(entry, entryIndex=0){
+  const word = cleanText(entry?.hwi?.hw || entry?.meta?.id || entry?.meta?.uuid || "Unknown word");
+  const phoneticText = getPronunciation(entry) || "Pronunciation unavailable";
+  const audioUrl = getAudioUrl(entry);
+  const definitions = collectDefinitions(entry);
+
+  const audioButton = audioUrl ? `
+    <div class="audio-list">
+      <button class="audio-btn" data-audio="${escapeHTML(audioUrl)}">
+        🔊 ${escapeHTML(phoneticText)}
       </button>
-    `).join("");
+    </div>
+  ` : "";
 
-  const phoneticText = entry.phonetic ||
-    phonetics.find(p=>p.text)?.text ||
-    "Pronunciation unavailable";
+  const grouped = {};
+  definitions.forEach(d => {
+    const key = d.label || "Meaning";
+    if(!grouped[key]) grouped[key] = [];
+    grouped[key].push(d.text);
+  });
 
-  const meanings = (entry.meanings || []).map(meaning=>{
-    const defs = (meaning.definitions || []).map((d,i)=>{
-      const relations = [];
-
-      if((d.synonyms || []).length){
-        relations.push(`
-          <div class="relation syn">
-            <b>Synonyms:</b>${d.synonyms.map(escapeHTML).join(", ")}
-          </div>
-        `);
-      }
-
-      if((d.antonyms || []).length){
-        relations.push(`
-          <div class="relation ant">
-            <b>Antonyms:</b>${d.antonyms.map(escapeHTML).join(", ")}
-          </div>
-        `);
-      }
-
-      return `
+  const meanings = Object.entries(grouped).map(([partOfSpeech, defs])=>`
+    <article class="meaning">
+      <span class="part">${escapeHTML(partOfSpeech)}</span>
+      ${defs.map((definition, i)=>`
         <div class="definition">
           <span class="def-number">${i+1}</span>
           <div>
-            <div class="def-text">${escapeHTML(d.definition)}</div>
-            ${d.example ? `<div class="example">${escapeHTML(d.example)}</div>` : ""}
-            ${relations.length ? `<div class="word-relations">${relations.join("")}</div>` : ""}
+            <div class="def-text">${escapeHTML(definition)}</div>
           </div>
         </div>
-      `;
-    }).join("");
-
-    return `
-      <article class="meaning">
-        <span class="part">${escapeHTML(meaning.partOfSpeech || "meaning")}</span>
-        ${defs}
-      </article>
-    `;
-  }).join("");
+      `).join("")}
+    </article>
+  `).join("");
 
   return `
     <article class="word-card">
       <header class="word-header">
         <div class="word-line">
           <div>
-            <h2 class="word">${escapeHTML(entry.word)}</h2>
+            <h2 class="word">${escapeHTML(word)}</h2>
             <div class="phonetic">${escapeHTML(phoneticText)}</div>
           </div>
 
           <div class="header-actions">
-            <button class="icon-btn" id="speakBtn" title="Speak word" aria-label="Speak word">🗣️</button>
-            <button class="icon-btn" id="copyBtn" title="Copy word" aria-label="Copy word">📋</button>
+            <button class="icon-btn" data-speak-word="${escapeHTML(word)}"
+                    title="Speak word" aria-label="Speak word">🗣️</button>
+            <button class="icon-btn" data-copy-word="${escapeHTML(word)}"
+                    title="Copy word" aria-label="Copy word">📋</button>
           </div>
         </div>
 
-        ${entry.origin ? `
-          <p class="origin">
-            <strong>Origin:</strong> ${escapeHTML(entry.origin)}
-          </p>
-        ` : ""}
-
-        ${audioButtons ? `<div class="audio-list">${audioButtons}</div>` : ""}
+        ${audioButton}
       </header>
 
       <div class="meanings">
@@ -506,7 +561,7 @@ async function searchWord(word){
   }
 
   // The API endpoint is intended for words; encode the path segment safely.
-  const url = API_BASE + encodeURIComponent(word);
+  const url = API_BASE + encodeURIComponent(word) + "?key=" + encodeURIComponent(API_KEY);
 
   setStatus("Looking up “" + word + "”…","loading");
   result.innerHTML = "";
@@ -523,25 +578,49 @@ async function searchWord(word){
       throw new Error(message);
     }
 
+    // The Learner's API may return either dictionary entries or
+    // an array of suggested words when no exact entry is available.
     const entries = Array.isArray(data) ? data : [data];
 
-    result.innerHTML = entries.map(renderEntry).join("") + renderRaw(data);
+    if(entries.length && typeof entries[0] === "string"){
+      result.innerHTML = `
+        <section class="empty">
+          <div class="empty-icon">💡</div>
+          <h2>Did you mean?</h2>
+          <p>${entries.map(w => `<button class="example" data-word="${escapeHTML(w)}">${escapeHTML(w)}</button>`).join(" ")}</p>
+        </section>
+      `;
 
-    document.querySelectorAll("[data-audio]").forEach(btn=>{
+      result.querySelectorAll("[data-word]").forEach(btn=>{
+        btn.addEventListener("click",()=>{
+          input.value = btn.dataset.word;
+          searchWord(btn.dataset.word);
+        });
+      });
+
+      setStatus(`No exact entry was returned for “${word}”. Here are some suggestions.`);
+      return;
+    }
+
+    result.innerHTML = entries.map((entry,i)=>renderEntry(entry,i)).join("") + renderRaw(data);
+
+    result.querySelectorAll("[data-audio]").forEach(btn=>{
       btn.addEventListener("click",()=>playAudio(btn.dataset.audio));
     });
 
-    document.getElementById("speakBtn")?.addEventListener("click",()=>{
-      speak(entries[0].word || word);
+    result.querySelectorAll("[data-speak-word]").forEach(btn=>{
+      btn.addEventListener("click",()=>speak(btn.dataset.speakWord));
     });
 
-    document.getElementById("copyBtn")?.addEventListener("click",async()=>{
-      try{
-        await navigator.clipboard.writeText(entries[0].word || word);
-        setStatus("Copied “" + (entries[0].word || word) + "” to the clipboard.","");
-      }catch{
-        setStatus("Could not access the clipboard.","error");
-      }
+    result.querySelectorAll("[data-copy-word]").forEach(btn=>{
+      btn.addEventListener("click",async()=>{
+        try{
+          await navigator.clipboard.writeText(btn.dataset.copyWord);
+          setStatus("Copied “" + btn.dataset.copyWord + "” to the clipboard.","");
+        }catch{
+          setStatus("Could not access the clipboard.","error");
+        }
+      });
     });
 
     setStatus(`Found ${entries.length} dictionary ${entries.length === 1 ? "entry" : "entries"} for “${word}”.`);
