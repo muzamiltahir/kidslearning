@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Story Vocabulary Adventure</title>
+<style>
+:root {
+  --ink:#23304a; --muted:#64748b; --paper:#fff;
+  --line:#e5e7eb; --accent:#6d5dfc; --accent2:#18a999;
+  --soft:#f6f7ff; --yellow:#fff7d6;
+}
+* {box-sizing:border-box}
+body {
+  margin:0; font-family: "Trebuchet MS", system-ui, sans-serif;
+  color:var(--ink); background:linear-gradient(135deg,#eef5ff,#fff8ef 55%,#eefcf8);
+}
+.hero {
+  max-width:1150px; margin:auto; padding:36px 18px 18px;
+}
+.banner {
+  background:linear-gradient(135deg,#5b54e8,#7b6cff);
+  color:white; border-radius:28px; padding:30px;
+  box-shadow:0 18px 40px rgba(70,65,180,.20);
+}
+.banner h1 {margin:0 0 8px;font-size:clamp(28px,5vw,48px)}
+.banner p {margin:0;opacity:.92;font-size:17px}
+.badges {display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.badge {background:rgba(255,255,255,.18);padding:7px 12px;border-radius:999px;font-size:13px}
+.controls {
+  margin:18px 0; background:white; border:1px solid var(--line);
+  border-radius:20px;padding:14px;display:grid;grid-template-columns:1fr auto auto;gap:10px;
+  box-shadow:0 10px 25px rgba(15,23,42,.06);
+}
+input,select {
+  border:1px solid #d7dbea;border-radius:12px;padding:12px 14px;font-size:15px;
+  outline:none;background:white;
+}
+input:focus,select:focus {border-color:var(--accent);box-shadow:0 0 0 3px rgba(109,93,252,.12)}
+.card {
+  background:var(--paper); border:1px solid var(--line); border-radius:22px;
+  overflow:hidden; box-shadow:0 12px 30px rgba(15,23,42,.07);
+}
+table {width:100%;border-collapse:collapse}
+th {
+  text-align:left;background:#f5f6ff;padding:15px 16px;font-size:13px;
+  text-transform:uppercase;letter-spacing:.05em;color:#536078;position:sticky;top:0;z-index:2;
+}
+td {padding:13px 16px;border-top:1px solid var(--line);vertical-align:middle}
+tr:hover td {background:#fafaff}
+.word {font-weight:800;font-size:18px;color:#4035bb}
+.tag {display:inline-block;padding:5px 9px;border-radius:999px;font-size:12px;font-weight:700}
+.tag.hero {background:#fff0ed;color:#c84a31}
+.tag.sub {background:#e8f8f5;color:#08796d}
+.tag.both {background:#fff6d7;color:#8a6500}
+.speak {
+  border:0;background:#eef0ff;border-radius:10px;padding:7px 9px;cursor:pointer;
+  font-size:16px
+}
+.speak:hover {transform:scale(1.05)}
+.footer {padding:18px 4px 35px;color:var(--muted);font-size:13px}
+.empty {padding:35px;text-align:center;color:var(--muted);display:none}
+@media(max-width:700px){
+ .controls{grid-template-columns:1fr}
+ th:nth-child(3),td:nth-child(3){display:none}
+ th,td{padding:11px 10px}
+ .word{font-size:16px}
+}
+</style>
+</head>
+<body>
+<div class="hero">
+  <section class="banner">
+    <h1>📚 My Story Vocabulary Adventure</h1>
+    <p>Discover useful words from <b>Hero</b> and <b>Submarine Adventure</b>.</p>
+    <div class="badges">
+      <span class="badge">99 learning words</span>
+      <span class="badge">🔎 Search & filter</span>
+      <span class="badge">🔊 Hear each word</span>
+    </div>
+  </section>
+
+  <div class="controls">
+    <input id="search" type="search" placeholder="🔍 Search for a word or meaning…">
+    <select id="source">
+      <option value="all">All stories</option>
+      <option value="hero">Hero</option>
+      <option value="submarine adventure">Submarine Adventure</option>
+      <option value="both">Both / useful in both</option>
+    </select>
+    <button id="clear" style="border:0;border-radius:12px;padding:0 16px;background:#eef0ff;color:#4035bb;font-weight:700;cursor:pointer">Clear</button>
+  </div>
+
+  <div class="card">
+    <table id="vocab">
+      <thead><tr><th>Word</th><th>Kid-friendly meaning</th><th>Story</th><th>Hear</th></tr></thead>
+      <tbody><tr data-source="submarine adventure"><td class="word">adventure</td><td>an exciting experience or journey</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear adventure">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">afraid</td><td>feeling scared or worried</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear afraid">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">ahead</td><td>in front or further forward</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear ahead">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">barked</td><td>made the sharp sound a dog makes</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear barked">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">basket</td><td>a container made for carrying or holding things</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear basket">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">below</td><td>in a lower place or position</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear below">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">birthday</td><td>the day each year when a person was born</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear birthday">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">bit</td><td>used the teeth to cut or hold something</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear bit">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">boat</td><td>a small vessel used for travelling on water</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear boat">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">bottom</td><td>the lowest part of something</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear bottom">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">box</td><td>a container with a flat bottom and sides</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear box">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">brave</td><td>not easily frightened; willing to face something difficult</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear brave">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">bravely</td><td>in a brave way; without showing fear</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear bravely">🔊</button></td></tr>
+<tr data-source="both"><td class="word">broke</td><td>damaged or split so that something no longer worked properly</td><td><span class="tag both">Both</span></td><td><button class="speak" aria-label="Hear broke">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">busy</td><td>having lots of things to do</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear busy">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">captain</td><td>the person in charge of a ship or boat</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear captain">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">card</td><td>a piece of stiff paper, often given for a special occasion</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear card">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">chair</td><td>a seat for one person</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear chair">🔊</button></td></tr>
+<tr data-source="both"><td class="word">children</td><td>young people; boys and girls</td><td><span class="tag both">Both</span></td><td><button class="speak" aria-label="Hear children">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">choose</td><td>to pick one thing from several possibilities</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear choose">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">crew</td><td>the people who work together on a ship or submarine</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear crew">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">crewman</td><td>a person who works as part of a ship&#x27;s crew</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear crewman">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">cried</td><td>made tears or a sound because of sadness or pain</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear cried">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">cross</td><td>angry or annoyed</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear cross">🔊</button></td></tr>
+<tr data-source="both"><td class="word">curious</td><td>wanting to know or learn something</td><td><span class="tag both">Both</span></td><td><button class="speak" aria-label="Hear curious">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">danger</td><td>the possibility of being harmed</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear danger">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">deep</td><td>far down from the surface</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear deep">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">department</td><td>a section of an organisation or group</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear department">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">discover</td><td>to find something for the first time</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear discover">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">downstairs</td><td>to or on a lower floor of a building</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear downstairs">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">equipment</td><td>the things needed for a particular activity</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear equipment">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">escape</td><td>to get away from a dangerous or difficult situation</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear escape">🔊</button></td></tr>
+<tr data-source="both"><td class="word">excited</td><td>very happy and interested about something</td><td><span class="tag both">Both</span></td><td><button class="speak" aria-label="Hear excited">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">exciting</td><td>making you feel very interested and happy</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear exciting">🔊</button></td></tr>
+<tr data-source="both"><td class="word">experience</td><td>something that happens to you and teaches you something</td><td><span class="tag both">Both</span></td><td><button class="speak" aria-label="Hear experience">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">explore</td><td>to travel around a place to learn about it</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear explore">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">farm</td><td>a place where crops are grown or animals are kept</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear farm">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">favourite</td><td>the one you like the most</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear favourite">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">fierce</td><td>wild, strong, or dangerous-looking</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear fierce">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">fish</td><td>animals that live in water and breathe through gills</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear fish">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">floor</td><td>the surface you walk on inside a building</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear floor">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">floppy</td><td>soft or hanging loosely rather than stiff</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear floppy">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">giant</td><td>extremely large</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear giant">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">glow</td><td>to shine with a soft light</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear glow">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">glowing</td><td>shining with a soft light</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear glowing">🔊</button></td></tr>
+<tr data-source="both"><td class="word">happy</td><td>feeling pleased or joyful</td><td><span class="tag both">Both</span></td><td><button class="speak" aria-label="Hear happy">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">howled</td><td>made a long, loud cry like a wolf or dog</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear howled">🔊</button></td></tr>
+<tr data-source="both"><td class="word">hurry</td><td>to move or do something quickly</td><td><span class="tag both">Both</span></td><td><button class="speak" aria-label="Hear hurry">🔊</button></td></tr>
+<tr data-source="both"><td class="word">imagine</td><td>to make a picture or idea in your mind</td><td><span class="tag both">Both</span></td><td><button class="speak" aria-label="Hear imagine">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">island</td><td>a piece of land surrounded by water</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear island">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">journey</td><td>a trip from one place to another</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear journey">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">lonely</td><td>sad because you are alone</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear lonely">🔊</button></td></tr>
+<tr data-source="both"><td class="word">look</td><td>to use your eyes to see something</td><td><span class="tag both">Both</span></td><td><button class="speak" aria-label="Hear look">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">magical</td><td>having special powers that seem impossible</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear magical">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">marine</td><td>connected with the sea</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear marine">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">middle</td><td>the part that is equally far from both ends</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear middle">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">missing</td><td>not there; absent, or wishing someone were there</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear missing">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">mumbled</td><td>spoke quietly and not very clearly</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear mumbled">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">mysterious</td><td>difficult to understand or explain</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear mysterious">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">navigate</td><td>to find and follow the right route</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear navigate">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">newspaper</td><td>a printed or online publication containing news</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear newspaper">🔊</button></td></tr>
+<tr data-source="both"><td class="word">notice</td><td>to see or become aware of something</td><td><span class="tag both">Both</span></td><td><button class="speak" aria-label="Hear notice">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">observe</td><td>to watch something carefully</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear observe">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">ocean</td><td>a very large area of salt water</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear ocean">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">octopus</td><td>a sea animal with eight arms</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear octopus">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">peep</td><td>to look quickly or carefully through a small opening</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear peep">🔊</button></td></tr>
+<tr data-source="both"><td class="word">pleased</td><td>happy or satisfied</td><td><span class="tag both">Both</span></td><td><button class="speak" aria-label="Hear pleased">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">present</td><td>a gift given to someone</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear present">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">properly</td><td>in the correct way</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear properly">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">puppy</td><td>a young dog</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear puppy">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">quickly</td><td>at a fast speed</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear quickly">🔊</button></td></tr>
+<tr data-source="both"><td class="word">quiet</td><td>making very little noise</td><td><span class="tag both">Both</span></td><td><button class="speak" aria-label="Hear quiet">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">ripped</td><td>tore something apart or made a tear in it</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear ripped">🔊</button></td></tr>
+<tr data-source="both"><td class="word">room</td><td>a space inside a building with walls and a ceiling</td><td><span class="tag both">Both</span></td><td><button class="speak" aria-label="Hear room">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">scared</td><td>frightened or worried</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear scared">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">settled</td><td>became comfortable in a new place</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear settled">🔊</button></td></tr>
+<tr data-source="both"><td class="word">shouted</td><td>spoke very loudly</td><td><span class="tag both">Both</span></td><td><button class="speak" aria-label="Hear shouted">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">sleep</td><td>to rest with your eyes closed</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear sleep">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">sleepless</td><td>without enough sleep</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear sleepless">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">snuggled</td><td>settled closely and comfortably against something or someone</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear snuggled">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">spilt</td><td>accidentally let liquid fall out of a container</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear spilt">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">strange</td><td>unusual or unfamiliar</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear strange">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">stumpy</td><td>short and thick</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear stumpy">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">submarine</td><td>a special vessel that can travel underwater</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear submarine">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">surface</td><td>the top or outside part of something</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear surface">🔊</button></td></tr>
+<tr data-source="both"><td class="word">surprise</td><td>something unexpected that causes wonder</td><td><span class="tag both">Both</span></td><td><button class="speak" aria-label="Hear surprise">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">tail</td><td>the part that extends from the back of an animal</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear tail">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">tiny</td><td>very small</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear tiny">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">tired</td><td>needing rest or sleep</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear tired">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">treasure</td><td>valuable or precious things</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear treasure">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">undersea</td><td>below the surface of the sea</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear undersea">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">underwater</td><td>below the surface of water</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear underwater">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">vessel</td><td>a large boat or ship used for travelling on water</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear vessel">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">voyage</td><td>a long journey, especially by sea</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear voyage">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">wagged</td><td>moved from side to side, especially a dog&#x27;s tail</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear wagged">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">whispered</td><td>spoke very softly</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear whispered">🔊</button></td></tr>
+<tr data-source="both"><td class="word">wonder</td><td>to think about something because you are curious</td><td><span class="tag both">Both</span></td><td><button class="speak" aria-label="Hear wonder">🔊</button></td></tr>
+<tr data-source="submarine adventure"><td class="word">wrong</td><td>not correct or not right</td><td><span class="tag sub">Submarine Adventure</span></td><td><button class="speak" aria-label="Hear wrong">🔊</button></td></tr>
+<tr data-source="hero"><td class="word">yawned</td><td>opened the mouth wide because you were tired</td><td><span class="tag hero">Hero</span></td><td><button class="speak" aria-label="Hear yawned">🔊</button></td></tr></tbody>
+    </table>
+    <div id="empty" class="empty">No words found. Try another search.</div>
+  </div>
+
+  <div class="footer">
+    <b>Parent tip:</b> Pick 5 words at a time. Ask your child to say the word,
+    explain it in their own words, and make a new sentence with it.
+    <br><br>
+    The vocabulary is selected from the uploaded reading material and prioritises
+    words that are useful for building a young reader's vocabulary rather than
+    listing every common word.
+  </div>
+</div>
+
+<script>
+const search = document.getElementById('search');
+const source = document.getElementById('source');
+const clear = document.getElementById('clear');
+const rows = [...document.querySelectorAll('#vocab tbody tr')];
+const empty = document.getElementById('empty');
+
+function filterRows() {
+  const q = search.value.trim().toLowerCase();
+  const s = source.value;
+  let count=0;
+  rows.forEach(row => {
+    const text = row.innerText.toLowerCase();
+    const src = row.dataset.source;
+    const ok = (!q || text.includes(q)) && (s==='all' || src===s);
+    row.style.display = ok ? '' : 'none';
+    if(ok) count++;
+  });
+  empty.style.display = count ? 'none' : 'block';
+}
+search.addEventListener('input',filterRows);
+source.addEventListener('change',filterRows);
+clear.addEventListener('click',()=>{search.value='';source.value='all';filterRows();search.focus();});
+
+document.querySelectorAll('.speak').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const word = btn.closest('tr').querySelector('.word').textContent;
+    if ('speechSynthesis' in window) {
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(word);
+      u.lang='en-GB'; u.rate=0.82;
+      speechSynthesis.speak(u);
+    }
+  });
+});
+</script>
+</body>
+</html>
